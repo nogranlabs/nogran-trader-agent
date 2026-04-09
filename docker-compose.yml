@@ -1,0 +1,61 @@
+# nogran.trader.agent — orchestrated stack
+#
+# Two profiles:
+#   default (no profile)  -> just the dashboard in DEMO mode (zero external deps)
+#   full                  -> dashboard + agent (python_llm strategy)
+#
+# Quick demo for hackathon judges:
+#     docker compose up
+#     # open http://localhost:8501
+#
+# Full pipeline (requires OPENAI_API_KEY in environment):
+#     docker compose --profile full up
+#
+# Stop everything:
+#     docker compose down              # default profile only
+#     docker compose --profile full down
+
+services:
+  # ============================================================
+  # Dashboard — always available, demo mode by default
+  # ============================================================
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nogran-trader-agent:latest
+    container_name: nogran-dashboard
+    command: dashboard
+    environment:
+      DEMO_MODE: "1"
+      DECISIONS_LOG_DIR: /app/logs/decisions
+    ports:
+      - "8501:8501"
+    volumes:
+      - agent-logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+
+  # ============================================================
+  # Agent — main pipeline (full profile only)
+  # ============================================================
+  agent:
+    image: nogran-trader-agent:latest
+    container_name: nogran-agent
+    command: agent
+    profiles: [full]
+    environment:
+      STRATEGY_SOURCE: python_llm
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      AGENT_DEBUG: ${AGENT_DEBUG:-0}
+    volumes:
+      - agent-logs:/app/logs
+    restart: unless-stopped
+
+volumes:
+  agent-logs:

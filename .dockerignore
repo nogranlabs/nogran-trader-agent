@@ -1,0 +1,49 @@
+# Bytecode / caches
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.ruff_cache
+.mypy_cache
+
+# Virtualenvs
+venv
+.venv
+env
+
+# Git
+.git
+.gitignore
+.git.backup
+
+# Docs that don't need to be in the image
+ARCHITECTURE.md
+SETUP.md
+README.md
+docs/
+
+# Tests stay out of runtime image
+tests/
+
+# CI / dev tooling
+.github/
+.pre-commit-config.yaml
+.secrets.baseline
+requirements.lock
+
+# Logs (mounted as volume at runtime)
+logs/
+
+# Reference repos (huge, not needed)
+trader refs/
+
+# Local IDE
+.idea
+.vscode
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Demo / sample data caches
+*.tmp

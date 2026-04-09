@@ -1,0 +1,69 @@
+[
+  {
+    "inputs": [
+      {"internalType": "address", "name": "agentWallet", "type": "address"},
+      {"internalType": "string", "name": "name", "type": "string"},
+      {"internalType": "string", "name": "description", "type": "string"},
+      {"internalType": "string[]", "name": "capabilities", "type": "string[]"},
+      {"internalType": "string", "name": "agentURI", "type": "string"}
+    ],
+    "name": "register",
+    "outputs": [{"internalType": "uint256", "name": "agentId", "type": "uint256"}],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "uint256", "name": "agentId", "type": "uint256"}],
+    "name": "getAgent",
+    "outputs": [
+      {
+        "components": [
+          {"internalType": "address", "name": "operatorWallet", "type": "address"},
+          {"internalType": "address", "name": "agentWallet", "type": "address"},
+          {"internalType": "string", "name": "name", "type": "string"},
+          {"internalType": "string", "name": "description", "type": "string"},
+          {"internalType": "string[]", "name": "capabilities", "type": "string[]"},
+          {"internalType": "uint256", "name": "registeredAt", "type": "uint256"},
+          {"internalType": "bool", "name": "active", "type": "bool"}
+        ],
+        "internalType": "struct AgentRegistry.AgentRegistration",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "uint256", "name": "agentId", "type": "uint256"}],
+    "name": "isRegistered",
+    "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "uint256", "name": "agentId", "type": "uint256"}],
+    "name": "getSigningNonce",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalAgents",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "uint256", "name": "agentId", "type": "uint256"},
+      {"indexed": true, "internalType": "address", "name": "operatorWallet", "type": "address"},
+      {"indexed": true, "internalType": "address", "name": "agentWallet", "type": "address"},
+      {"internalType": "string", "name": "name", "type": "string"}
+    ],
+    "name": "AgentRegistered",
+    "type": "event"
+  }
+]

@@ -1,0 +1,15 @@
+# Direct dependencies — pinned via requirements.lock for reproducible builds.
+# Run `pip install -r requirements.lock` for an exact-match install.
+# This file lists only the top-level deps with sane minimums.
+
+ccxt==4.5.46
+websockets==16.0
+pandas==3.0.2
+python-dotenv==1.2.2
+requests==2.33.1
+aiohttp==3.13.4
+pydantic>=2.0,<3.0
+
+# ERC-8004 (Sepolia) — install when running compliance/erc8004_onchain.py
+# web3>=6.0
+# eth-account>=0.10

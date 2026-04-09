@@ -1,0 +1,29 @@
+[
+  {
+    "id": "setup_h2_buy",
+    "titulo": "High 2 (H2) - Bandeira de Alta",
+    "contexto": "Tendência de alta estabelecida ou rompimento de alta recente. O mercado faz uma correção de duas pernas (A-B-C).",
+    "setup": "H2 (High 2)",
+    "regra": "Comprar 1 tick acima da máxima da barra que acionou a segunda tentativa de subida após o início da correção.",
+    "stop": "Abaixo da mínima da barra de sinal (a barra que gerou o gatilho H2).",
+    "observacao": "A H2 é um dos setups de maior probabilidade em tendências de alta fortes, pois representa a desistência dos vendedores após duas tentativas falhas de reverter o preço."
+  },
+  {
+    "id": "setup_m2b_buy",
+    "titulo": "M2B (Moving Average Gap Bar)",
+    "contexto": "Tendência de alta forte onde o preço ficou muitas barras acima da Média Móvel Exponencial de 20 períodos (EMA 20).",
+    "setup": "M2B",
+    "regra": "Aguardar o preço tocar ou ultrapassar levemente a EMA 20 pela primeira vez em muito tempo. Comprar na superação da máxima da primeira barra que fechar acima da EMA após esse toque.",
+    "stop": "Abaixo da mínima da correção ou da barra de sinal.",
+    "observacao": "M2B significa 'Moving Average 20 Bar'. É um sinal de que a tendência de alta é tão forte que os compradores estão defendendo a média móvel agressivamente."
+  },
+  {
+    "id": "setup_tr_reversal",
+    "titulo": "Falha de Rompimento em Lateralidade (Trading Range)",
+    "contexto": "O mercado está em um canal lateral (Trading Range). O preço tenta romper a máxima ou mínima anterior e falha.",
+    "setup": "Failed Breakout",
+    "regra": "Se o preço testar a máxima da lateralidade e fechar como uma barra de reversão (pavio longo no topo), vender 1 tick abaixo da mínima dessa barra.",
+    "stop": "Acima da máxima da barra de sinal de reversão.",
+    "observacao": "Em lateralidades, 80% das tentativas de rompimento falham. O objetivo é buscar o lado oposto do canal (o fundo da lateralidade)."
+  }
+]

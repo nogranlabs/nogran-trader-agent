@@ -1,0 +1,14 @@
+[
+  {
+    "id_teste": "setup_h2_figura_pi_1",
+    "cenario": "Correção ABC em tendência de alta (Pullback de 2 pernas)",
+    "dados_mock_ohlcv": [
+      {"fechamento": "alta", "rompeu_maxima_anterior": false, "contexto": "Perna A (Barra 3)"},
+      {"fechamento": "alta", "rompeu_maxima_anterior": true, "contexto": "Perna B / High 1 (Barra 4)"},
+      {"fechamento": "baixa", "rompeu_maxima_anterior": false, "contexto": "Perna C (Barra 5)"},
+      {"fechamento": "alta", "rompeu_maxima_anterior": true, "contexto": "Gatilho (Barra após a 5)"}
+    ],
+    "gabarito_acao": "COMPRAR",
+    "gabarito_motivo_chave": "High 2"
+  }
+]

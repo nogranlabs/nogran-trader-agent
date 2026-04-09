@@ -1,0 +1,32 @@
+# Default: auto-detect line endings, normalize to LF in repo
+* text=auto eol=lf
+
+# Force LF on files that MUST be Unix (shell scripts, Docker, CI configs).
+# Without this, git on Windows may convert to CRLF and break the container build.
+*.sh             text eol=lf
+*.bash           text eol=lf
+Dockerfile       text eol=lf
+*.dockerfile     text eol=lf
+docker-compose.* text eol=lf
+.dockerignore    text eol=lf
+.gitattributes   text eol=lf
+
+# YAML / TOML / JSON — keep LF for cross-platform reproducibility
+*.yml            text eol=lf
+*.yaml           text eol=lf
+*.toml           text eol=lf
+*.json           text eol=lf
+
+# Python source — LF (PEP 8 / common convention)
+*.py             text eol=lf
+
+# Markdown — LF
+*.md             text eol=lf
+
+# Binary files — never normalize
+*.pdf            binary
+*.png            binary
+*.jpg            binary
+*.jpeg           binary
+*.zip            binary
+*.lock           binary

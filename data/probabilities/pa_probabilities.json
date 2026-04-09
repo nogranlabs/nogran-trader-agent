@@ -1,0 +1,1299 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-04-08T03:14:37Z",
+  "description": "Nogran price action setup probabilities — used by the Decision Scorer (Strategy Score, weight 35%). Curated in-house, cross-checked against public open-source price action references.",
+  "total_setups": 62,
+  "total_hard_rules": 22,
+  "setups": [
+    {
+      "setup_id": "high_2_pullback_ma_bull",
+      "name_en": "High 2 pullback to moving average in bull trend",
+      "name_pt": "High 2 pullback para a media movel em tendencia de alta",
+      "category": "trend_continuation",
+      "direction": "long",
+      "context": [
+        "bull_trend",
+        "pullback_to_ma"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Nogran PA lista explicitamente como setup de 60%+; reward deve ser ao menos igual ao risco."
+    },
+    {
+      "setup_id": "low_2_pullback_ma_bear",
+      "name_en": "Low 2 pullback to moving average in bear trend",
+      "name_pt": "Low 2 pullback para a media movel em tendencia de baixa",
+      "category": "trend_continuation",
+      "direction": "short",
+      "context": [
+        "bear_trend",
+        "pullback_to_ma"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Setup de continuacao de 60%+ segundo Nogran PA."
+    },
+    {
+      "setup_id": "wedge_bull_flag_pullback",
+      "name_en": "Wedge bull flag pullback in bull trend",
+      "name_pt": "Wedge bull flag pullback em tendencia de alta",
+      "category": "trend_continuation",
+      "direction": "long",
+      "context": [
+        "bull_trend",
+        "wedge_pullback"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Listado por Nogran PA no bucket 60%+."
+    },
+    {
+      "setup_id": "wedge_bear_flag_pullback",
+      "name_en": "Wedge bear flag pullback in bear trend",
+      "name_pt": "Wedge bear flag pullback em tendencia de baixa",
+      "category": "trend_continuation",
+      "direction": "short",
+      "context": [
+        "bear_trend",
+        "wedge_pullback"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Setup de 60%+ segundo Nogran PA."
+    },
+    {
+      "setup_id": "breakout_pullback_bull_flag",
+      "name_en": "Breakout pullback from bull flag in bull trend",
+      "name_pt": "Breakout pullback de bull flag em tendencia de alta",
+      "category": "breakout",
+      "direction": "long",
+      "context": [
+        "bull_trend",
+        "after_bull_flag_breakout"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Bucket 60%+."
+    },
+    {
+      "setup_id": "breakout_pullback_bear_flag",
+      "name_en": "Breakout pullback from bear flag in bear trend",
+      "name_pt": "Breakout pullback de bear flag em tendencia de baixa",
+      "category": "breakout",
+      "direction": "short",
+      "context": [
+        "bear_trend",
+        "after_bear_flag_breakout"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Bucket 60%+."
+    },
+    {
+      "setup_id": "high_1_in_strong_bull_spike",
+      "name_en": "High 1 pullback in strong bull spike",
+      "name_pt": "High 1 pullback em bull spike forte",
+      "category": "trend_continuation",
+      "direction": "long",
+      "context": [
+        "bull_trend",
+        "strong_bull_spike",
+        "not_after_buy_climax"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Nao usar apos buy climax."
+    },
+    {
+      "setup_id": "low_1_in_strong_bear_spike",
+      "name_en": "Low 1 pullback in strong bear spike",
+      "name_pt": "Low 1 pullback em bear spike forte",
+      "category": "trend_continuation",
+      "direction": "short",
+      "context": [
+        "bear_trend",
+        "strong_bear_spike",
+        "not_after_sell_climax"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Nao usar apos sell climax."
+    },
+    {
+      "setup_id": "short_top_trading_range_2nd_entry",
+      "name_en": "Short at top of trading range, especially second entry",
+      "name_pt": "Short no topo do trading range, especialmente segunda entrada",
+      "category": "range_fade",
+      "direction": "short",
+      "context": [
+        "trading_range",
+        "top_of_range",
+        "second_entry_preferred"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Segunda entrada aumenta a probabilidade."
+    },
+    {
+      "setup_id": "buy_bottom_trading_range_2nd_entry",
+      "name_en": "Buy at bottom of trading range, especially second entry",
+      "name_pt": "Compra no fundo do trading range, especialmente segunda entrada",
+      "category": "range_fade",
+      "direction": "long",
+      "context": [
+        "trading_range",
+        "bottom_of_range",
+        "second_entry_preferred"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Segunda entrada aumenta a probabilidade."
+    },
+    {
+      "setup_id": "trend_reversal_after_tl_break_test",
+      "name_en": "Trend reversal after strong trend line break and test of extreme",
+      "name_pt": "Reversao de tendencia apos quebra forte da linha de tendencia e teste do extremo",
+      "category": "reversal",
+      "direction": "both",
+      "context": [
+        "after_trendline_break",
+        "test_of_extreme",
+        "strong_signal_bar"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Listado no bucket 60%+; precisa de signal bar forte."
+    },
+    {
+      "setup_id": "strong_final_flag_reversal",
+      "name_en": "Strong final flag reversal",
+      "name_pt": "Reversao de final flag forte",
+      "category": "reversal",
+      "direction": "both",
+      "context": [
+        "after_swing",
+        "final_flag"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Listado por Nogran PA no bucket 60%+."
+    },
+    {
+      "setup_id": "third_fourth_push_bear_stairs",
+      "name_en": "Third or fourth push down in bear stairs pattern",
+      "name_pt": "Terceira ou quarta perna em padrao de bear stairs",
+      "category": "reversal",
+      "direction": "long",
+      "context": [
+        "bear_stairs",
+        "test_prior_push_low"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Reversao para teste do swing anterior."
+    },
+    {
+      "setup_id": "third_fourth_push_bull_stairs",
+      "name_en": "Third or fourth push up in bull stairs pattern",
+      "name_pt": "Terceira ou quarta perna em padrao de bull stairs",
+      "category": "reversal",
+      "direction": "short",
+      "context": [
+        "bull_stairs",
+        "test_prior_push_high"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Espelho do bear stairs."
+    },
+    {
+      "setup_id": "scalp_strong_setup",
+      "name_en": "Scalp setups (high probability, small reward)",
+      "name_pt": "Scalps de alta probabilidade",
+      "category": "scalp",
+      "direction": "both",
+      "context": [
+        "high_probability_setup"
+      ],
+      "probability_pct": 70,
+      "probability_range": [
+        70,
+        90
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.0,
+      "notes_pt": "Mesmo em scalps Nogran PA recomenda reward >= risk."
+    },
+    {
+      "setup_id": "buy_bull_spike_strong_breakout",
+      "name_en": "Buy bull spike in strong bull breakout (limit at/below prior bar low)",
+      "name_pt": "Comprar bull spike em breakout forte (limit no/below low da barra anterior)",
+      "category": "breakout",
+      "direction": "long",
+      "context": [
+        "strong_bull_breakout",
+        "spike_phase"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Requer stop largo; spike acontece rapido."
+    },
+    {
+      "setup_id": "sell_bear_spike_strong_breakout",
+      "name_en": "Sell bear spike in strong bear breakout",
+      "name_pt": "Vender bear spike em breakout forte",
+      "category": "breakout",
+      "direction": "short",
+      "context": [
+        "strong_bear_breakout",
+        "spike_phase"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Espelho do bull spike breakout."
+    },
+    {
+      "setup_id": "successful_breakout_spike_measured_move",
+      "name_en": "Successful breakout spike — measured move target",
+      "name_pt": "Breakout spike bem sucedido — alvo de measured move",
+      "category": "breakout",
+      "direction": "both",
+      "context": [
+        "strong_spike",
+        "always_in_flip"
+      ],
+      "probability_pct": 70,
+      "probability_range": [
+        60,
+        80
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.0,
+      "notes_pt": "Nogran PA: probabilidade minima 60%, podendo chegar a 80%."
+    },
+    {
+      "setup_id": "strong_breakout_followthrough",
+      "name_en": "Strong breakout follow-through",
+      "name_pt": "Follow-through em breakout forte",
+      "category": "breakout",
+      "direction": "both",
+      "context": [
+        "strong_breakout"
+      ],
+      "probability_pct": 70,
+      "probability_range": [
+        70,
+        80
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.0,
+      "notes_pt": "Nogran PA afirma >70% para follow-through em breakouts fortes."
+    },
+    {
+      "setup_id": "opening_reversal_swing",
+      "name_en": "Opening reversal — swing entry (strong setup)",
+      "name_pt": "Reversao de abertura — swing (setup forte)",
+      "category": "reversal",
+      "direction": "both",
+      "context": [
+        "opening_range",
+        "strong_signal"
+      ],
+      "probability_pct": 55,
+      "probability_range": [
+        50,
+        60
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 2.0,
+      "notes_pt": "Reward minimo 2x risco."
+    },
+    {
+      "setup_id": "opening_reversal_scalp",
+      "name_en": "Opening reversal — scalp entry",
+      "name_pt": "Reversao de abertura — scalp",
+      "category": "scalp",
+      "direction": "both",
+      "context": [
+        "opening_range",
+        "strong_signal"
+      ],
+      "probability_pct": 65,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Forma scalp da mesma reversao de abertura."
+    },
+    {
+      "setup_id": "bear_trend_reversal_attempt_fail_rate",
+      "name_en": "Bear reversal attempts in bull trend (fail rate)",
+      "name_pt": "Tentativas de reversao bear em bull trend (taxa de falha)",
+      "category": "reversal",
+      "direction": "short",
+      "context": [
+        "strong_bull_trend",
+        "early_reversal_attempt"
+      ],
+      "probability_pct": 20,
+      "probability_range": [
+        10,
+        30
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": null,
+      "notes_pt": "80% das tentativas de reversao falham; usar como filtro contra contra-tendencia."
+    },
+    {
+      "setup_id": "trading_range_inertia_breakouts",
+      "name_en": "Trading range breakout attempts (fail rate)",
+      "name_pt": "Tentativas de breakout em trading range (taxa de falha)",
+      "category": "breakout",
+      "direction": "both",
+      "context": [
+        "trading_range"
+      ],
+      "probability_pct": 20,
+      "probability_range": [
+        10,
+        30
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": null,
+      "notes_pt": "80% dos breakouts de TR falham — fade o breakout inicial."
+    },
+    {
+      "setup_id": "trend_reversal_attempts_in_trend",
+      "name_en": "Reversal attempts within an established trend (fail rate)",
+      "name_pt": "Tentativas de reversao dentro de tendencia (taxa de falha)",
+      "category": "reversal",
+      "direction": "both",
+      "context": [
+        "established_trend"
+      ],
+      "probability_pct": 20,
+      "probability_range": [
+        10,
+        30
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": null,
+      "notes_pt": "80% das tentativas de reversao em tendencia viram flag."
+    },
+    {
+      "setup_id": "scaling_initial_entry_range",
+      "name_en": "Initial entry when scaling into a trading range",
+      "name_pt": "Entrada inicial ao escalar em trading range",
+      "category": "range_fade",
+      "direction": "both",
+      "context": [
+        "trading_range",
+        "scaling_in"
+      ],
+      "probability_pct": 50,
+      "probability_range": [
+        40,
+        60
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Reward minimo 1.5x risco."
+    },
+    {
+      "setup_id": "tight_range_breakout_anticipation",
+      "name_en": "Buy/sell in tight trading range expecting breakout",
+      "name_pt": "Compra/venda em tight TR esperando breakout",
+      "category": "range_fade",
+      "direction": "both",
+      "context": [
+        "tight_trading_range"
+      ],
+      "probability_pct": 50,
+      "probability_range": [
+        40,
+        60
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Bucket 50%."
+    },
+    {
+      "setup_id": "lower_high_higher_low_in_range",
+      "name_en": "Short lower high / buy higher low in range (possible reversal)",
+      "name_pt": "Short em lower high / compra em higher low dentro de range",
+      "category": "reversal",
+      "direction": "both",
+      "context": [
+        "trading_range",
+        "possible_reversal"
+      ],
+      "probability_pct": 50,
+      "probability_range": [
+        40,
+        60
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 2.0,
+      "notes_pt": "Reward 2x risco para compensar prob 50%."
+    },
+    {
+      "setup_id": "reversal_against_trend_extreme",
+      "name_en": "Reversal at clear resistance/support against trend (limit fade)",
+      "name_pt": "Reversao em resistencia/suporte clara contra a tendencia",
+      "category": "reversal",
+      "direction": "both",
+      "context": [
+        "clear_resistance_or_support",
+        "against_trend",
+        "small_risk_large_reward"
+      ],
+      "probability_pct": 35,
+      "probability_range": [
+        30,
+        40
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 2.0,
+      "notes_pt": "Bucket de 40% ou menos; reward 2x+."
+    },
+    {
+      "setup_id": "breakout_test_limit_with_trend",
+      "name_en": "Breakout test on limit with-trend",
+      "name_pt": "Teste de breakout via limit a favor da tendencia",
+      "category": "trend_continuation",
+      "direction": "both",
+      "context": [
+        "trend",
+        "breakout_test"
+      ],
+      "probability_pct": 50,
+      "probability_range": [
+        40,
+        60
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 2.0,
+      "notes_pt": "Nogran PA define faixa explicita 40-60%."
+    },
+    {
+      "setup_id": "fading_magnet_measured_move",
+      "name_en": "Fading magnets (e.g. measured move target)",
+      "name_pt": "Fade de imas (alvo de measured move)",
+      "category": "reversal",
+      "direction": "both",
+      "context": [
+        "measured_move_target",
+        "magnet"
+      ],
+      "probability_pct": 50,
+      "probability_range": [
+        40,
+        60
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 2.0,
+      "notes_pt": "Bucket 40-60%."
+    },
+    {
+      "setup_id": "fade_buy_climax",
+      "name_en": "Sell buy climax (large bull bar at resistance in overdone bull)",
+      "name_pt": "Vender buy climax (barra grande em resistencia)",
+      "category": "reversal",
+      "direction": "short",
+      "context": [
+        "buy_climax",
+        "overdone_bull",
+        "resistance"
+      ],
+      "probability_pct": 50,
+      "probability_range": [
+        40,
+        60
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 2.0,
+      "notes_pt": "Bucket 40-60%."
+    },
+    {
+      "setup_id": "fade_sell_climax",
+      "name_en": "Buy sell climax (large bear bar at support in overdone bear)",
+      "name_pt": "Comprar sell climax (barra grande em suporte)",
+      "category": "reversal",
+      "direction": "long",
+      "context": [
+        "sell_climax",
+        "overdone_bear",
+        "support"
+      ],
+      "probability_pct": 50,
+      "probability_range": [
+        40,
+        60
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 2.0,
+      "notes_pt": "Espelho do buy climax fade."
+    },
+    {
+      "setup_id": "limit_low12_in_new_bull",
+      "name_en": "Limit buy at/below low 1/2 weak signal bar in new bull or range bottom",
+      "name_pt": "Limit buy em low 1/2 weak signal bar no fundo de range/novo bull",
+      "category": "reversal",
+      "direction": "long",
+      "context": [
+        "new_bull_trend",
+        "range_bottom",
+        "weak_signal_bar"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Nogran PA lista no bucket 60%+."
+    },
+    {
+      "setup_id": "limit_high12_in_new_bear",
+      "name_en": "Limit short at/above high 1/2 weak signal bar in new bear or range top",
+      "name_pt": "Limit short em high 1/2 weak signal bar no topo de range/novo bear",
+      "category": "reversal",
+      "direction": "short",
+      "context": [
+        "new_bear_trend",
+        "range_top",
+        "weak_signal_bar"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Espelho do limit low 1/2 buy."
+    },
+    {
+      "setup_id": "limit_quiet_bull_flag_at_ma",
+      "name_en": "Limit buy in quiet bull flag at moving average",
+      "name_pt": "Limit buy em bull flag silencioso na MA",
+      "category": "trend_continuation",
+      "direction": "long",
+      "context": [
+        "quiet_bull_flag",
+        "at_ma"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Setup de 60%+."
+    },
+    {
+      "setup_id": "limit_quiet_bear_flag_at_ma",
+      "name_en": "Limit short in quiet bear flag at moving average",
+      "name_pt": "Limit short em bear flag silencioso na MA",
+      "category": "trend_continuation",
+      "direction": "short",
+      "context": [
+        "quiet_bear_flag",
+        "at_ma"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Espelho do bull flag MA."
+    },
+    {
+      "setup_id": "limit_anticipate_breakout_pullback_bull",
+      "name_en": "Limit buy below bull bar breaking above bull flag (anticipate BO pullback)",
+      "name_pt": "Limit buy abaixo de bull bar quebrando bull flag (antecipar BO pullback)",
+      "category": "breakout",
+      "direction": "long",
+      "context": [
+        "bull_flag_breakout",
+        "anticipating_pullback"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Setup de 60%+."
+    },
+    {
+      "setup_id": "limit_anticipate_breakout_pullback_bear",
+      "name_en": "Limit short above bear bar breaking below bear flag",
+      "name_pt": "Limit short acima de bear bar quebrando bear flag",
+      "category": "breakout",
+      "direction": "short",
+      "context": [
+        "bear_flag_breakout",
+        "anticipating_pullback"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        60,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Espelho do bull flag BO pullback."
+    },
+    {
+      "setup_id": "trading_range_general",
+      "name_en": "Generic trade inside trading range",
+      "name_pt": "Trade generico dentro de trading range",
+      "category": "range_fade",
+      "direction": "both",
+      "context": [
+        "trading_range"
+      ],
+      "probability_pct": 50,
+      "probability_range": [
+        50,
+        60
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.0,
+      "notes_pt": "Probabilidade media dentro de TR e ~50%, raramente 60%."
+    },
+    {
+      "setup_id": "low_prob_swing_in_weak_channel",
+      "name_en": "Low-probability swing in weak channel near top/bottom",
+      "name_pt": "Swing de baixa probabilidade em canal fraco perto do extremo",
+      "category": "trend_continuation",
+      "direction": "both",
+      "context": [
+        "weak_channel",
+        "near_extreme"
+      ],
+      "probability_pct": 40,
+      "probability_range": [
+        30,
+        50
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 2.0,
+      "notes_pt": "Reward 2x+ porque a probabilidade e baixa."
+    },
+    {
+      "setup_id": "deep_pullback_directional_assumption",
+      "name_en": "Equidistant move directional probability when setup looks good",
+      "name_pt": "Probabilidade direcional de movimento equidistante quando setup parece bom",
+      "category": "trend_continuation",
+      "direction": "both",
+      "context": [
+        "good_looking_setup"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        50,
+        60
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Regra base de Nogran PA para evaluar trades."
+    },
+    {
+      "setup_id": "uncertain_setup_baseline",
+      "name_en": "Uncertain setup baseline probability",
+      "name_pt": "Probabilidade baseline para setup incerto",
+      "category": "scalp",
+      "direction": "both",
+      "context": [
+        "uncertain"
+      ],
+      "probability_pct": 50,
+      "probability_range": [
+        50,
+        50
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 2.0,
+      "notes_pt": "Quando incerto: assumir 50% e exigir reward 2x."
+    },
+    {
+      "setup_id": "limit_at_resistance_fade",
+      "name_en": "Limit short just below clear resistance (small risk swing)",
+      "name_pt": "Limit short um tick abaixo de resistencia clara",
+      "category": "reversal",
+      "direction": "short",
+      "context": [
+        "clear_resistance",
+        "limit_entry"
+      ],
+      "probability_pct": 35,
+      "probability_range": [
+        30,
+        40
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 3.0,
+      "notes_pt": "Bucket 40% ou menos; reward muito grande."
+    },
+    {
+      "setup_id": "micro_channel_with_trend",
+      "name_en": "Micro Channel (with-trend entry)",
+      "name_pt": "Micro Canal (entrada a favor)",
+      "category": "trend_continuation",
+      "direction": "both",
+      "context": [
+        "established_trend",
+        "tight_channel_no_pullbacks",
+        "5_to_10_bar_micro_line"
+      ],
+      "probability_pct": 70,
+      "probability_range": [
+        65,
+        75
+      ],
+      "probability_confidence": "inferred",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Canal muito apertado de 2 a 10 barras sem pullbacks; primeira tentativa de reversao tipicamente falha e vira pullback de continuacao."
+    },
+    {
+      "setup_id": "tight_channel_small_pullback_trend",
+      "name_en": "Tight Channel / Small Pullback Trend",
+      "name_pt": "Canal Apertado / Tendencia de Pullbacks Pequenos",
+      "category": "trend_continuation",
+      "direction": "both",
+      "context": [
+        "trend_from_the_open",
+        "small_pullbacks_10_to_30pct_adr",
+        "strong_trend_day"
+      ],
+      "probability_pct": 70,
+      "probability_range": [
+        65,
+        75
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Dia de tendencia com pullbacks muito pequenos. Nogran PA afirma explicitamente 70 por cento de sucesso para swing setups com trader experiente."
+    },
+    {
+      "setup_id": "buy_the_close_bull",
+      "name_en": "Buy the Close in Strong Bull Trend",
+      "name_pt": "Comprar no Fechamento em Tendencia de Alta Forte",
+      "category": "trend_continuation",
+      "direction": "long",
+      "context": [
+        "strong_bull_trend",
+        "consecutive_trend_bars",
+        "no_overlap_of_bodies"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        55,
+        65
+      ],
+      "probability_confidence": "implied",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Em tendencia de alta forte, compradores fortes colocam ordens limite no fechamento da barra anterior; sinal de urgencia do touro."
+    },
+    {
+      "setup_id": "sell_the_close_bear",
+      "name_en": "Sell the Close in Strong Bear Trend",
+      "name_pt": "Vender no Fechamento em Tendencia de Baixa Forte",
+      "category": "trend_continuation",
+      "direction": "short",
+      "context": [
+        "strong_bear_trend",
+        "consecutive_bear_trend_bars",
+        "weak_sell_signals"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        55,
+        65
+      ],
+      "probability_confidence": "implied",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Em bear trend forte, bulls presos e bears fortes vendem no fechamento; sinais fracos fazem a tendencia persistir."
+    },
+    {
+      "setup_id": "wedge_reversal",
+      "name_en": "Wedge Reversal (three-push reversal)",
+      "name_pt": "Reversao em Cunha (tres empurroes)",
+      "category": "reversal",
+      "direction": "both",
+      "context": [
+        "three_pushes_at_trend_extreme",
+        "20_or_more_bars",
+        "trend_channel_line_overshoot"
+      ],
+      "probability_pct": 55,
+      "probability_range": [
+        50,
+        60
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 2.5,
+      "notes_pt": "Tres empurroes em topo ou fundo de tendencia; melhor esperar segundo sinal. Nogran PA cita 60 por cento para correcao mais complexa."
+    },
+    {
+      "setup_id": "parabolic_wedge",
+      "name_en": "Parabolic Wedge (extreme urgency)",
+      "name_pt": "Cunha Parabolica (urgencia extrema)",
+      "category": "reversal",
+      "direction": "both",
+      "context": [
+        "accelerating_trend_channel_line",
+        "second_steeper_tcl",
+        "climactic_behavior"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        55,
+        65
+      ],
+      "probability_confidence": "implied",
+      "min_reward_risk": 2.5,
+      "notes_pt": "Cunha com segunda linha de canal mais inclinada que a primeira; comportamento climatico, reversao tipica em duas pernas e 10 barras."
+    },
+    {
+      "setup_id": "cup_and_handle",
+      "name_en": "Cup and Handle (breakout pullback)",
+      "name_pt": "Xicara com Alca (pullback de rompimento)",
+      "category": "trend_continuation",
+      "direction": "both",
+      "context": [
+        "breakout_to_new_extreme",
+        "pullback_to_breakout_price",
+        "second_entry"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        55,
+        65
+      ],
+      "probability_confidence": "implied",
+      "min_reward_risk": 2.5,
+      "notes_pt": "Pullback que testa o preco de rompimento; Nogran PA cita como um dos setups a favor mais confiaveis."
+    },
+    {
+      "setup_id": "second_leg_trap_in_range",
+      "name_en": "Second Leg Trap in Trading Range (failed H2/L2)",
+      "name_pt": "Armadilha de Segunda Perna em Trading Range",
+      "category": "range_fade",
+      "direction": "both",
+      "context": [
+        "inside_trading_range",
+        "high_2_near_top_or_low_2_near_bottom",
+        "expected_failure"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        55,
+        65
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Em trading range, H2 perto do topo ou L2 perto do fundo tende a falhar; fade da falha tem 60 por cento explicito."
+    },
+    {
+      "setup_id": "vacuum_test_swing_level",
+      "name_en": "Vacuum Test of Support/Resistance",
+      "name_pt": "Teste em Vacuo de Suporte/Resistencia",
+      "category": "reversal",
+      "direction": "both",
+      "context": [
+        "protracted_trend",
+        "near_measured_move_or_tcl",
+        "strong_traders_step_aside"
+      ],
+      "probability_pct": 55,
+      "probability_range": [
+        50,
+        60
+      ],
+      "probability_confidence": "implied",
+      "min_reward_risk": 2.0,
+      "notes_pt": "Spike climatico em vacuo ate nivel chave onde traders fortes esperam para entrar contra. Reversao tipica apos o teste."
+    },
+    {
+      "setup_id": "broad_channel",
+      "name_en": "Broad Channel Trend (stairs)",
+      "name_pt": "Tendencia em Canal Largo (escadas)",
+      "category": "trend_continuation",
+      "direction": "both",
+      "context": [
+        "three_or_more_trending_swings",
+        "overlap_between_swings",
+        "two_way_trading"
+      ],
+      "probability_pct": 55,
+      "probability_range": [
+        50,
+        60
+      ],
+      "probability_confidence": "inferred",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Padrao escada com tres ou mais trading ranges em tendencia; permite trades nas duas direcoes com swing parcial a favor."
+    },
+    {
+      "setup_id": "triangle_at_tr_extreme",
+      "name_en": "Triangle at Trading Range Extreme",
+      "name_pt": "Triangulo em Extremo de Trading Range",
+      "category": "breakout",
+      "direction": "both",
+      "context": [
+        "three_pushes",
+        "breakout_mode",
+        "late_in_trend_or_final_flag"
+      ],
+      "probability_pct": 55,
+      "probability_range": [
+        50,
+        60
+      ],
+      "probability_confidence": "inferred",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Triangulo em extremo de TR sinaliza modo de rompimento; levemente viesado para a tendencia anterior mas exige confirmacao."
+    },
+    {
+      "setup_id": "fomo_entry_late",
+      "name_en": "FOMO Late Entry (anti-pattern / salvage rule)",
+      "name_pt": "Entrada Tardia por FOMO (anti-padrao)",
+      "category": "anti_pattern",
+      "direction": "both",
+      "context": [
+        "strong_trend_already_underway",
+        "missed_original_entry",
+        "always_in_clear"
+      ],
+      "probability_pct": 55,
+      "probability_range": [
+        50,
+        60
+      ],
+      "probability_confidence": "implied",
+      "min_reward_risk": 1.5,
+      "notes_pt": "Entrar tarde so se always-in claro e com posicao reduzida equivalente ao swing residual. Usar stop original, nao o de scalp."
+    },
+    {
+      "setup_id": "tr_breakout_setup",
+      "name_en": "Trading Range Breakout Setup",
+      "name_pt": "Setup de Rompimento de Trading Range",
+      "category": "breakout",
+      "direction": "both",
+      "context": [
+        "strong_spike_out_of_range",
+        "always_in_flip",
+        "measured_move_target"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        55,
+        70
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 2.0,
+      "notes_pt": "Rompimento com spike forte tem 60 a 80 por cento explicito de atingir movimento medido. Entrar no fechamento do spike, stop abaixo da base."
+    },
+    {
+      "setup_id": "mtr_higher_low",
+      "name_en": "Major Trend Reversal: Higher Low (bull reversal)",
+      "name_pt": "MTR: Fundo Mais Alto (reversao para alta)",
+      "category": "reversal",
+      "direction": "long",
+      "context": [
+        "bear_trend_line_break",
+        "test_of_bear_low",
+        "higher_low_second_leg_start"
+      ],
+      "probability_pct": 50,
+      "probability_range": [
+        40,
+        60
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 3.0,
+      "notes_pt": "HL apos quebra da trendline de baixa; ja inicia a segunda perna, mas probabilidade baixa com recompensa grande."
+    },
+    {
+      "setup_id": "mtr_lower_high",
+      "name_en": "Major Trend Reversal: Lower High (bear reversal)",
+      "name_pt": "MTR: Topo Mais Baixo (reversao para baixa)",
+      "category": "reversal",
+      "direction": "short",
+      "context": [
+        "bull_trend_line_break",
+        "test_of_bull_high",
+        "lower_high_second_leg_start"
+      ],
+      "probability_pct": 50,
+      "probability_range": [
+        40,
+        60
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 3.0,
+      "notes_pt": "LH apos quebra da trendline de alta; tipicamente segunda chance para shorts apos HH inicial falhado."
+    },
+    {
+      "setup_id": "mtr_double_bottom_hl",
+      "name_en": "Major Trend Reversal: Double Bottom Higher Low (strong)",
+      "name_pt": "MTR: Fundo Duplo com HL (forte)",
+      "category": "reversal",
+      "direction": "long",
+      "context": [
+        "strong_trend_line_break",
+        "double_bottom_pattern",
+        "confirmed_bull_reversal"
+      ],
+      "probability_pct": 55,
+      "probability_range": [
+        50,
+        65
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 3.0,
+      "notes_pt": "Padrao de fundo duplo com HL e um dos sinais mais fortes de MTR; traders que esperam confirmacao buscam 60 por cento de sucesso."
+    },
+    {
+      "setup_id": "mtr_double_top_lh",
+      "name_en": "Major Trend Reversal: Double Top Lower High (strong)",
+      "name_pt": "MTR: Topo Duplo com LH (forte)",
+      "category": "reversal",
+      "direction": "short",
+      "context": [
+        "strong_trend_line_break",
+        "double_top_pattern",
+        "confirmed_bear_reversal"
+      ],
+      "probability_pct": 55,
+      "probability_range": [
+        50,
+        65
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 3.0,
+      "notes_pt": "Topo duplo com LH e confirmacao adicional; Nogran PA cita explicitamente 60 por cento para melhores setups de MTR."
+    },
+    {
+      "setup_id": "mtr_higher_high",
+      "name_en": "Major Trend Reversal: Higher High (fade bull push)",
+      "name_pt": "MTR: Topo Mais Alto (fade do push de alta)",
+      "category": "reversal",
+      "direction": "short",
+      "context": [
+        "bull_trend_line_break",
+        "higher_high_test",
+        "first_leg_start"
+      ],
+      "probability_pct": 50,
+      "probability_range": [
+        40,
+        55
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 3.0,
+      "notes_pt": "HH overshoot apos quebra da trendline; inicia primeira perna de reversao, geralmente com LH como segunda oportunidade."
+    },
+    {
+      "setup_id": "mtr_lower_low",
+      "name_en": "Major Trend Reversal: Lower Low (fade bear push)",
+      "name_pt": "MTR: Fundo Mais Baixo (fade do push de baixa)",
+      "category": "reversal",
+      "direction": "long",
+      "context": [
+        "bear_trend_line_break",
+        "lower_low_test",
+        "trend_channel_line_overshoot"
+      ],
+      "probability_pct": 60,
+      "probability_range": [
+        50,
+        65
+      ],
+      "probability_confidence": "explicit",
+      "min_reward_risk": 2.0,
+      "notes_pt": "LL overshoot apos quebra da trendline de baixa; Nogran PA observa que bears falham 80 por cento ao tentar estender o trend, favorecendo long."
+    }
+  ],
+  "hard_rules": [
+    {
+      "rule_id": "always_use_stop",
+      "rule_pt": "Sempre tenha um stop de protecao no mercado — crenca e esperanca nao protegem contra premissa falha."
+    },
+    {
+      "rule_id": "no_high_prob_big_reward",
+      "rule_pt": "Nao existe trade com alta probabilidade E grande reward relativo ao risco — instituicoes nao deixam."
+    },
+    {
+      "rule_id": "reward_at_least_risk_beginners",
+      "rule_pt": "Iniciantes: nunca tomar trade com reward menor que risco; idealmente reward 2x risco."
+    },
+    {
+      "rule_id": "60pct_assumption_good_setup",
+      "rule_pt": "Se o setup parece bom, assumir 60% de probabilidade; com reward >= risco isso da edge positivo."
+    },
+    {
+      "rule_id": "tight_range_trumps_all",
+      "rule_pt": "Tight trading range trumpa qualquer outra razao para entrar; pare de operar com stop entries dentro dela."
+    },
+    {
+      "rule_id": "no_countertrend_without_tl_break",
+      "rule_pt": "Nunca operar contra-tendencia sem antes uma quebra forte de linha de tendencia significativa."
+    },
+    {
+      "rule_id": "80pct_reversals_fail",
+      "rule_pt": "80% das tentativas de reversao falham — encare cada topo como inicio de bull flag e cada fundo como bear flag."
+    },
+    {
+      "rule_id": "80pct_breakouts_fail_in_range",
+      "rule_pt": "Em trading range, 80% das tentativas de breakout falham."
+    },
+    {
+      "rule_id": "no_countertrend_scalps",
+      "rule_pt": "Voce nao vai ganhar dinheiro consistente ate parar de fazer scalps contra-tendencia."
+    },
+    {
+      "rule_id": "scalp_min_60pct",
+      "rule_pt": "Scalp so deve ser feito se voce ganha pelo menos 60% das vezes; iniciantes scalpam so a favor da tendencia."
+    },
+    {
+      "rule_id": "wait_for_two_legs",
+      "rule_pt": "Sempre procure por duas pernas; quando o mercado falha duas vezes em fazer algo, vai conseguir o oposto."
+    },
+    {
+      "rule_id": "never_cherry_pick_swing_take_all_low_prob",
+      "rule_pt": "Em sistema de baixa probabilidade nao escolha trades — tem que pegar todos os setups validos."
+    },
+    {
+      "rule_id": "buy_above_bull_short_below_bear",
+      "rule_pt": "Compre apenas acima de bull bars e venda apenas abaixo de bear bars."
+    },
+    {
+      "rule_id": "trend_inertia_80pct",
+      "rule_pt": "Inercia do mercado: em tendencia, 80% das tentativas de reversao se tornam flags."
+    },
+    {
+      "rule_id": "3_to_5_trades_per_day",
+      "rule_pt": "Procure apenas 3 a 5 trades razoaveis por dia; na duvida, fique de fora."
+    },
+    {
+      "rule_id": "no_reversal_until_tl_break_test",
+      "rule_pt": "Nao vai ganhar em reversoes ate esperar quebra de linha de tendencia significativa + signal bar forte no teste do extremo."
+    },
+    {
+      "rule_id": "stops_on_entries",
+      "rule_pt": "Iniciantes devem entrar somente com ordens stop."
+    },
+    {
+      "rule_id": "trade_with_trend_pullbacks",
+      "rule_pt": "Voce nao vai ganhar dinheiro ate comecar a operar pullbacks a favor da tendencia."
+    },
+    {
+      "rule_id": "low_prob_needs_2x_reward",
+      "rule_pt": "Probabilidade <= 40% exige reward de pelo menos 2x o risco."
+    },
+    {
+      "rule_id": "50pct_needs_1_5x_reward",
+      "rule_pt": "Probabilidade ~50% exige reward >= 1.5x o risco."
+    },
+    {
+      "rule_id": "60pct_needs_1x_reward",
+      "rule_pt": "Probabilidade 60%+ exige reward pelo menos igual ao risco."
+    },
+    {
+      "rule_id": "70pct_needs_half_reward",
+      "rule_pt": "Probabilidade 70%+ exige reward >= metade do risco para nao perder no longo prazo."
+    }
+  ],
+  "source": "nogran_pa_v1"
+}

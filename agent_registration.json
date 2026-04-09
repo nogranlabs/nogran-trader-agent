@@ -1,0 +1,16 @@
+{
+  "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+  "name": "nogran.trader.agent",
+  "description": "Autonomous trading agent with Nogran price action RAG Top-Down, 4-component Decision Scoring System, independent Risk Engine with circuit breakers, and adaptive Learning Loop. Trades BTC/USD on Kraken via CLI.",
+  "endpoints": [
+    {
+      "name": "audit_trail",
+      "endpoint": "https://github.com/nogran/nogran.trader.agent/tree/main/logs/decisions"
+    }
+  ],
+  "capabilities": [
+    "trading",
+    "risk_management",
+    "price_action_analysis"
+  ]
+}

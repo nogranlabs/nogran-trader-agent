@@ -1,0 +1,33 @@
+[
+  {
+    "inputs": [
+      {"internalType": "uint256", "name": "agentId", "type": "uint256"},
+      {"internalType": "bytes32", "name": "checkpointHash", "type": "bytes32"},
+      {"internalType": "uint8", "name": "score", "type": "uint8"},
+      {"internalType": "string", "name": "notes", "type": "string"}
+    ],
+    "name": "postEIP712Attestation",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "uint256", "name": "agentId", "type": "uint256"}],
+    "name": "getAverageValidationScore",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "uint256", "name": "agentId", "type": "uint256"},
+      {"indexed": true, "internalType": "address", "name": "validator", "type": "address"},
+      {"indexed": true, "internalType": "bytes32", "name": "checkpointHash", "type": "bytes32"},
+      {"internalType": "uint8", "name": "score", "type": "uint8"},
+      {"internalType": "uint8", "name": "proofType", "type": "uint8"}
+    ],
+    "name": "AttestationPosted",
+    "type": "event"
+  }
+]

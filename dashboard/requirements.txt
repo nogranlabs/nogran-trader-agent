@@ -1,0 +1,7 @@
+# Dashboard runtime deps — pinned to versions in requirements.lock for reproducibility.
+streamlit==1.56.0
+plotly==6.6.0
+altair==6.0.0
+pandas==3.0.2
+numpy==2.4.4
+markupsafe==3.0.3

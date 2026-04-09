@@ -1,0 +1,41 @@
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+extend-exclude = [
+    "venv",
+    ".venv",
+    "src/_legacy_v1",
+    "trader refs",
+    ".pytest_cache",
+    "__pycache__",
+]
+
+[tool.ruff.lint]
+# Conservative ruleset — catches real bugs without forcing style rewrites
+# on the existing codebase.
+select = [
+    "E4",   # imports
+    "E7",   # statement style (multiple statements, lambda assign, etc.)
+    "E9",   # syntax errors
+    "F",    # pyflakes (unused imports, undefined names, f-string issues)
+    "I",    # isort (import sorting)
+    "B",    # bugbear (likely bugs)
+    "UP",   # pyupgrade (deprecated syntax)
+    "W605", # invalid escape sequence
+]
+ignore = [
+    "E501",   # line-too-long — codebase predates ruff, not worth mass-rewriting
+    "E712",   # comparison to True/False — sometimes intentional with pandas
+    "E741",   # ambiguous variable names — l/I/O — too noisy in stat code
+    "B008",   # function calls in default args — fine for our use cases
+    "B904",   # raise from — too noisy in error wrappers
+    "UP007",  # use X | Y instead of Optional — keep both styles fine
+    "UP045",  # X | None instead of Optional[X] — same
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["F401", "F811"]  # tests can have unused imports / fixture redefs
+"dashboard/app.py" = ["E402"]  # st.set_page_config must run before other imports
+
+[tool.ruff.lint.isort]
+known-first-party = ["domain", "infra", "market", "strategy", "ai", "risk", "execution", "compliance"]

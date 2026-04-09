@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "deny": [
+      "Edit(src/_legacy_v1/**)",
+      "Write(src/_legacy_v1/**)",
+      "Edit(.env)",
+      "Write(.env)"
+    ]
+  }
+}
