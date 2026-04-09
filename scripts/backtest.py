@@ -258,6 +258,10 @@ class OpenPosition:
     # been ratcheted to entry. breakeven_moved prevents redundant moves.
     original_stop_loss: float = 0.0
     breakeven_moved: bool = False
+    # Fix A (2026-04-09): trail stop ratchet level. After the BE move at 1.0R,
+    # the stop is ratcheted upward at 1.5R, 2.0R, 2.5R to lock progressive
+    # profit. Each level fires at most once per trade.
+    trail_level: int = 0   # 0 = no trail, 1 = 1.5R locked, 2 = 2.0R locked, etc.
 
 
 @dataclass
@@ -477,6 +481,61 @@ def _maybe_move_to_breakeven(pos: OpenPosition, candle: Candle,
             pos.breakeven_moved = True
             return True
     return False
+
+
+# Fix A (Trail stop): after the breakeven move at 1.0R, ratchet the stop up
+# at fixed RR levels to progressively lock in profit. This captures the
+# scenario from r1_full_C_d60_90 where positions reached partial profit
+# (e.g. 0.83R on trade #4) but then drifted back to entry and timed out.
+# A trail at 0.5R lock would have exited that trade in profit.
+TRAIL_LEVELS = [
+    # (trigger_rr, lock_rr) — fired in order, each at most once
+    (1.5, 0.5),
+    (2.0, 1.0),
+    (2.5, 1.5),
+]
+
+
+def _maybe_trail_stop(pos: OpenPosition, candle: Candle) -> bool:
+    """Ratchet stop upward through TRAIL_LEVELS once breakeven has fired.
+
+    Returns True if the stop was moved this candle.
+    """
+    if not pos.breakeven_moved:
+        return False
+    if pos.original_stop_loss == 0.0:
+        return False
+    risk = abs(pos.entry_price - pos.original_stop_loss)
+    if risk <= 0:
+        return False
+
+    # Walk through any trail levels above the current pos.trail_level
+    moved = False
+    for level_idx, (trigger_rr, lock_rr) in enumerate(TRAIL_LEVELS, start=1):
+        if pos.trail_level >= level_idx:
+            continue  # already locked this level
+        if pos.side == "long":
+            trigger_price = pos.entry_price + risk * trigger_rr
+            if candle.high >= trigger_price:
+                new_stop = pos.entry_price + risk * lock_rr
+                if new_stop > pos.stop_loss:
+                    pos.stop_loss = new_stop
+                    pos.trail_level = level_idx
+                    moved = True
+                    continue
+            break  # didn't reach this level, won't reach higher ones
+        else:  # short
+            trigger_price = pos.entry_price - risk * trigger_rr
+            if candle.low <= trigger_price:
+                new_stop = pos.entry_price - risk * lock_rr
+                if new_stop < pos.stop_loss:
+                    pos.stop_loss = new_stop
+                    pos.trail_level = level_idx
+                    moved = True
+                    continue
+            break
+
+    return moved
 
 
 def _close_position(pos: OpenPosition, exit_price: float, exit_reason: str,
@@ -741,6 +800,9 @@ def run_backtest(
             if tuning.breakeven_enabled and pos.entry_index != idx:
                 if _maybe_move_to_breakeven(pos, candle, tuning.breakeven_trigger_rr):
                     stats["breakeven_moves"] = stats.get("breakeven_moves", 0) + 1
+                # Fix A: trail stop after breakeven — ratchet at 1.5R/2.0R/2.5R
+                if _maybe_trail_stop(pos, candle):
+                    stats["trail_moves"] = stats.get("trail_moves", 0) + 1
             exit_check = _check_exit(pos, candle)
             forced_timeout = (idx - pos.entry_index) >= MAX_HOLD_BARS
             if exit_check is not None:
