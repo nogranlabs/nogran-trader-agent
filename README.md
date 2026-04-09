@@ -1,51 +1,51 @@
 # nogran.trader.agent
 
-> Agente autonomo de trading com arquitetura hibrida: Nogran price action + RAG Top-Down + Risk Engine independente + Decision Scoring + ERC-8004. Desenvolvido para o hackathon **AI Trading Agents** (lablab.ai + Kraken + Surge, 30/mar–12/abr/2026).
+> Autonomous trading agent with a hybrid architecture: Nogran price action + top-down RAG + an independent risk engine + decision scoring + ERC-8004. Built for the **AI Trading Agents** hackathon (lablab.ai + Kraken + Surge, Mar 30 – Apr 12, 2026).
 
 ---
 
 ## 🏆 Hackathon Submission — AI Trading Agents
 
-> **Para juizes e revisores:** este bloco resume tudo que voce precisa em 2 minutos.
+> **For judges and reviewers:** this block has everything you need in 2 minutes.
 
-### Diferencial unico (1 paragrafo)
+### What makes us different (one paragraph)
 
-A maioria dos agentes do hackathon usa LLM como decisor unico. Esse e o problema: LLMs alucinam padroes que nao existem em mercados financeiros, e nao ha forma estruturada de detectar quando isso acontece. **Nogran resolve com a Nogran Price Action Knowledge Base + Hallucination Detector**: 62 setups + 22 hard rules curados in-house, cross-checkados contra referencias open-source publicas. Cada decisao do LLM e blendada (60% LLM + 40% PA KB) e dispara um alarme estruturado se a divergencia exceder 25 pontos. **Tornamos a deteccao de alucinacao mensuravel e auditavel** — em vez de "esperar dar errado".
+Most agents in the hackathon use the LLM as the sole decision-maker. That is the problem: LLMs hallucinate patterns that do not exist in financial markets, and there is no structured way to detect when this happens. **Nogran fixes that with the Nogran Price Action Knowledge Base + Hallucination Detector**: 62 setups + 22 hard rules curated in-house, cross-checked against public open-source references. Every LLM decision is blended (60% LLM + 40% PA KB) and triggers a structured alarm when divergence exceeds 25 points. **We make hallucination detection measurable and auditable** — instead of "wait and see what breaks".
 
-### Como rodar (1 comando, sem dependencias externas)
+### How to run (one command, no external dependencies)
 
 ```bash
 docker compose up
-# abre http://localhost:8501 — dashboard demo com dados sinteticos
+# open http://localhost:8501 — demo dashboard with synthetic data
 ```
 
-### Como rodar o backtest (juizes podem reproduzir)
+### How to run the backtest (judges can reproduce)
 
 ```bash
-# Instala deps + roda backtest 30d em dados reais Binance BTC/USDT 5m
+# Install deps + run a 30-day backtest on real Binance BTC/USDT 5m data
 pip install -r requirements.txt
 python scripts/backtest.py --source ccxt --exchange binance --symbol BTC/USDT --timeframe 5m --days 30
 ```
 
 ### Live numbers (Binance BTC/USDT 15m, OpenAI GPT-4o + Nogran PA RAG, fee-aware prompt v1.3)
 
-Smoke test 200 candles (~2 days), maker fees:
+Smoke test, 200 candles (~2 days), maker fees:
 
 | Metric | Value | Note |
 |---|---|---|
 | **Net PnL** | **+2.59%** | LLM with structural stops + fee-aware prompt |
-| **Win rate** | **100%** (3/3) | Sample small but ALL targets hit |
-| **Sharpe (annualized)** | **+21.24** | Tiny sample warning, but directional signal strong |
-| **Max drawdown** | **0.00%** | No losing trade in window |
-| **Avg win** | $86 | vs $40 with v1.2 prompt |
+| **Win rate** | **100%** (3/3) | Tiny sample, but every target was hit |
+| **Sharpe (annualised)** | **+21.24** | Tiny sample warning, but the directional signal is strong |
+| **Max drawdown** | **0.00%** | No losing trade in the window |
+| **Avg win** | $86 | vs $40 with the v1.2 prompt |
 | **Buy-and-hold baseline** | +2.40% | Market trended up |
 | **Alpha vs B&H** | **+0.19%** | Beat the market on a bull day |
-| **Profit factor** | infinite | (3 wins / 0 losses in sample) |
+| **Profit factor** | infinite | (3 wins / 0 losses in the sample) |
 
-A larger sample (1000 candles, ~10 days) is running at submission time and will be reported in the video. Direction trip:
-- Mock heuristic (no LLM):  -8% / 17% wr — mathematical impossibility (fee drag dominant)
-- LLM, no fee awareness:    -1% / 50% wr — LLM picked correct setups but RR too tight
-- **LLM, fee-aware v1.3:**  **+2.59% / 100% wr** — RR >=2.5 enforced, only swings
+A larger sample (1000 candles, ~10 days) is running at submission time and will be reported in the video. Iteration log:
+- Mock heuristic (no LLM):    -8% / 17% WR — mathematically impossible (fee drag dominant)
+- LLM, no fee awareness:      -1% / 50% WR — LLM picked correct setups but RR too tight
+- **LLM, fee-aware v1.3:**    **+2.59% / 100% WR** — RR ≥ 2.5 enforced, only swings
 
 ### On-chain status (Sepolia)
 
@@ -55,7 +55,7 @@ A larger sample (1000 candles, ~10 days) is running at submission time and will 
 | Wallet | [`0xe8520a82a4e8803fa4a3Ccb93d73cef386f41CCD`](https://sepolia.etherscan.io/address/0xe8520a82a4e8803fa4a3Ccb93d73cef386f41CCD) |
 | Allocation claimed | 0.05 ETH (HackathonVault) |
 | **TradeIntents approved on-chain** | **31** (rank 15/25 by approved-trade activity) |
-| **EIP-712 signature compliance** | 100% post-fix (was 0% due to v-byte bug we hunted down) |
+| **EIP-712 signature compliance** | 100% post-fix (was 0% due to a v-byte bug we hunted down) |
 | Validation score | 0 → expected to update once a validator attests (we discovered validators are whitelisted addresses; we cannot self-attest) |
 
 ### What we discovered + fixed in the run-up to submission
@@ -64,90 +64,94 @@ We hunted **11 structural bugs** that would have silently destroyed the agent. D
 
 1. **EIP-712 v-byte bug** — `eth_keys` returns `v ∈ {0,1}` but OpenZeppelin's ECDSA expects `v ∈ {27,28}`. **All 10 of our first TradeIntents were silently rejected.** Now fixed: 31/31 approved.
 2. **`ExposureManager` wall-clock bug** — `time.time()` in batch backtest blocked all trades after the first 4 (because the simulated 8000 candles processed in <1s, hitting the hourly limit immediately).
-3. **Backtest stop/target override** — backtest was overwriting LLM's structure-based stops with mechanical `ATR×1.5`, defeating the entire point of the LLM.
+3. **Backtest stop/target override** — backtest was overwriting the LLM's structure-based stops with mechanical `ATR×1.5`, defeating the entire point of the LLM.
 4. **`rr_min=1.5` filter rejecting valid PA scalps** — shaved bar setups have legitimate 1:1 RR.
-5. **Fee-unaware prompt** — LLM was picking 0.2% reward setups; after telling it about 0.5% Kraken fees, it now picks >1% reward setups.
+5. **Fee-unaware prompt** — the LLM was picking 0.2% reward setups; after telling it about the 0.5% Kraken fees, it now picks >1% reward setups.
 6. **Default Gemini model** — `gemini-flash-latest` aliases to `gemini-3-flash` (preview, 20 req/day). Switched to `gemini-2.5-flash-lite`.
 7. **Prompt language mismatch** — was Portuguese, switched to English (price action terminology is native English). Output quality measurably better.
-8. **No RAG retriever** — LLM was relying on training data instead of consulting the local PA chunks. Built rule-based retriever (no vector DB needed).
-9. **No pre-filter for LLM mode** — was calling LLM on every candle. Now mock heuristic pre-filters (~5% LLM call rate).
+8. **No RAG retriever** — the LLM was relying on training data instead of consulting the local PA chunks. Built a rule-based retriever (no vector DB needed).
+9. **No pre-filter for the LLM mode** — was calling the LLM on every candle. Now a mock heuristic pre-filters (~5% LLM call rate).
 10. **Sepolia RPC fallback** — `rpc.sepolia.org` is unreliable. Now tries 4 alternatives.
-11. **`Config.TIMEFRAME_EXEC = "1m"`** — sub-5m timeframes are too noisy for the methodology. Changed to 5m.
+11. **`Config.TIMEFRAME_EXEC = "1m"`** — sub-5m timeframes are too noisy for the methodology. Changed to 5m, then to 15m.
 
-### Critérios oficiais do hackathon e onde estamos
+### Official hackathon criteria and where we stand
 
-| Criterio | Como atendemos |
+| Criterion | How we cover it |
 |---|---|
-| **Application of Technology** | Pipeline 9-stage (FeatureEngine → PreFilter → Mock candidate → PARetriever → Python LLM → KB enrichment → AI Overlay → Risk Engine → Decision Scorer → ERC-8004 → Execution). **310 tests** verdes, CI matrix Python 3.10/3.11/3.12, Docker compose. |
-| **Presentation** | Streamlit dashboard 8 abas (Live, Score, Performance, Trade Review, Thinking, **Backtest**, Pipeline, ERC). Plotly equity curve, KB setup performance, validation post status. |
-| **Impact / practical value** | Risk Engine independente do LLM, position sizing dinâmico, circuit breakers, EIP-712 signed TradeIntents on-chain (**31 approved**). |
-| **Uniqueness & creativity** | **Nogran PA KB + Hallucination Detector + Rule-based RAG retriever** — cross-check estruturado contra uma KB de probabilidades, em vez de confiar cego no LLM. **Multi-provider LLM** (OpenAI + Gemini) com cache reproducível. |
+| **Application of Technology** | 9-stage pipeline (FeatureEngine → PreFilter → PARetriever → Python LLM → KB enrichment → AI Overlay → Risk Engine → Decision Scorer → ERC-8004 → Execution). **386 tests** green, ruff lint clean, Docker compose ships in one command. |
+| **Presentation** | Streamlit dashboard with 8 tabs (Live, Score, Performance, Trade Review, Thinking, **Backtest**, Pipeline, ERC). Plotly equity curve, KB setup performance, validation post status. |
+| **Impact / practical value** | Risk Engine independent of the LLM, dynamic position sizing, circuit breakers, EIP-712 signed TradeIntents on-chain (**31 approved**). |
+| **Uniqueness & creativity** | **Nogran PA KB + Hallucination Detector + rule-based RAG retriever** — a structured cross-check against a probability KB instead of trusting the LLM blindly. **Multi-provider LLM** (OpenAI + Gemini) with reproducible cache. |
 
-### Componentes ERC-8004 integrados (status real)
+### Integrated ERC-8004 components (real status)
 
 - ✅ **AgentRegistry** — agent_id 44 registered
 - ✅ **HackathonVault** — 0.05 ETH allocation claimed
 - ✅ **RiskRouter** — 31 TradeIntents approved (EIP-712 signing fix applied)
-- 🟡 **ValidationRegistry** — checkpoint posting implemented but blocked by validator whitelist (only whitelisted validators can attest; we await external attestation)
-- ✅ **ReputationRegistry** — submit_feedback() implemented (ABI file pending)
+- 🟡 **ValidationRegistry** — checkpoint posting implemented but blocked by the validator whitelist (only whitelisted validators can attest; we await external attestation)
+- ✅ **ReputationRegistry** — `submit_feedback()` implemented (ABI file pending)
 
-### Documentacao tecnica
+### Technical documentation
 
-| Arquivo | Para que serve |
+| File | What it covers |
 |---|---|
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | 57KB de detalhes tecnicos |
-| [`SETUP.md`](SETUP.md) | Instalacao manual + Docker |
-| [`docs/hackathon-criteria.md`](docs/hackathon-criteria.md) | Analise dos criterios oficiais |
-| [`docs/trader-requirements.md`](docs/trader-requirements.md) | Checklist do que precisamos ter ate o freeze |
-| [`docs/strategy-fee-drag-finding.md`](docs/strategy-fee-drag-finding.md) | Achado critico do backtest (transparencia) |
-| [`docs/competitive-analysis.md`](docs/competitive-analysis.md) | Análise on-chain dos outros agentes |
-| [`docs/feature-gap-audit.md`](docs/feature-gap-audit.md) | Auditoria 56 itens spec PA vs codigo |
-| [`docs/tech-debt.md`](docs/tech-debt.md) | 15/15 tech-debts resolvidos |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | Detailed technical architecture |
+| [`SETUP.md`](SETUP.md) | Manual install + Docker |
+| [`docs/hackathon-criteria.md`](docs/hackathon-criteria.md) | Analysis of the official criteria (PT) |
+| [`docs/trader-requirements.md`](docs/trader-requirements.md) | Pre-freeze checklist (PT) |
+| [`docs/strategy-fee-drag-finding.md`](docs/strategy-fee-drag-finding.md) | Critical backtest finding (PT, transparency) |
+| [`docs/competitive-analysis.md`](docs/competitive-analysis.md) | On-chain analysis of competing agents (PT) |
+| [`docs/feature-gap-audit.md`](docs/feature-gap-audit.md) | 56-item gap audit: PA spec vs code (PT) |
+| [`docs/tech-debt.md`](docs/tech-debt.md) | Tech debt log (PT) |
 
 ---
 
-## O Problema
+## The problem
 
-Agentes de trading com IA falham de duas formas:
+AI trading bots fail in two ways:
 
-1. **LLM decide tudo** — alucina padroes que nao existem, sem controle de risco
-2. **Bot quant com IA decorativa** — a IA gera um comentario mas nao influencia a decisao
+1. **The LLM decides everything** — it hallucinates patterns that do not exist, with no real risk control.
+2. **Quant bot with decorative AI** — the AI generates a comment but does not influence the decision.
 
-Em ambos os casos, nao ha controle real de risco e o capital e destruido.
+In both cases there is no real risk control and capital is destroyed.
 
-**A causa raiz:** tentar ler o mercado de baixo pra cima (le a barra, depois busca contexto) quando o correto e o inverso. E confiar no LLM para tudo — inclusive numeros.
-
----
-
-## A Solucao
-
-O **nogran.trader.agent** resolve com 4 decisoes arquiteturais:
-
-1. **Separacao total entre percepcao e interpretacao:** Python le o mercado e gera fatos matematicos frios. O LLM nunca toca em dados brutos.
-2. **RAG Cirurgico Top-Down:** o LLM consulta a Nogran PA KB em 5 camadas ordenadas (macro -> micro). O contexto macro determina o significado do sinal micro.
-3. **Decision Score com veto independente:** 4 sub-scores compoem um score unico (0-100). O trade so executa se score > 65. Qualquer camada pode vetar.
-4. **Knowledge base estruturada com hallucination detector:** o LLM e cross-checked contra 62 setups da PA KB com probabilidades verificaveis. Quando o LLM diverge da KB por >=25 pontos, dispara um alarme em tempo real que entra no audit trail e no checkpoint on-chain.
+**Root cause:** trying to read the market bottom-up (read the bar, then look for context) when the correct approach is the inverse. And trusting the LLM with everything — including the numbers.
 
 ---
 
-## Arquitetura
+## The solution
+
+**nogran.trader.agent** addresses this with 4 architectural decisions:
+
+1. **Total separation between perception and interpretation:** Python reads the market and generates cold mathematical facts. The LLM never touches raw data.
+2. **Surgical top-down RAG:** the LLM consults the Nogran PA KB across 5 ordered layers (macro → micro). Macro context determines the meaning of the micro signal.
+3. **Decision Score with independent veto:** 4 sub-scores compose a single 0–100 score. The trade only executes if score > 65. Any layer can veto.
+4. **Structured knowledge base with a hallucination detector:** the LLM is cross-checked against the 62 setups in the PA KB with verifiable probabilities. When the LLM diverges from the KB by ≥ 25 points, a real-time alarm fires that lands in the audit trail and the on-chain checkpoint.
+
+---
+
+## Architecture
 
 ```
-[Kraken WebSocket — BTC/USD 1m + 5m]
+[Kraken WebSocket — BTC/USD 15m]
        |
        v
 [FEATURE ENGINE — Python local]
-  EMA(20), ATR(14), ADX(14), caudas, consecutivas, volume
+  EMA(20), ATR(14), ADX(14), tails, consecutive bars, swings, 1h HTF, always-in
        |
        v
 [PRE-FILTER — Market Quality Score]
   Chop detector, volatility gate, session filter
-  VETA se MQ < 30
+  VETO if MQ < 30
        |
        v
 [STRATEGY ENGINE — Python LLM with PA KB RAG]
-  5 camadas: Tipo do Dia -> Macro -> Estrutura -> Micro -> Setup
+  5 layers: Day Type → Macro → Structure → Micro → Setup
   Output: TradeSignal + Strategy Score
+       |
+       v
+[NOGRAN PA KB ENRICHMENT — hallucination detector]
+  Blend LLM 60% + PA 40%; structured alarm on >=25 pts gap
        |
        v
 [AI OVERLAY — Python local]
@@ -155,59 +159,59 @@ O **nogran.trader.agent** resolve com 4 decisoes arquiteturais:
   Output: AI Overlay Score
        |
        v
-[RISK ENGINE — Python local, independente do LLM]
-  Position sizing (ATR + score + drawdown), stop adaptativo, circuit breakers
+[RISK ENGINE — Python local, independent of the LLM]
+  Position sizing (ATR + score + drawdown), adaptive stops, circuit breakers
   Output: Risk Score + RiskApproval
        |
        v
 [DECISION SCORER]
-  Combina: MQ (20%) + Strategy (35%) + AI Overlay (20%) + Risk (25%)
-  Executa SOMENTE se score > 65 e nenhum sub-score < 20
+  Combines: MQ (20%) + Strategy (35%) + AI Overlay (20%) + Risk (25%)
+  Executes ONLY if score > 65 and no sub-score < 20
        |
        v
-[ERC-8004 — TradeIntent assinado + audit trail + reputacao]
+[ERC-8004 — signed TradeIntent + audit trail + reputation]
        |
        v
 [EXECUTION — Kraken CLI (paper trading)]
        |
        v
-[LEARNING LOOP — planejado, nao implementado]
-  Calibracao pos-trade (src/learning/ vazio)
+[LEARNING LOOP — planned, not yet implemented]
+  Post-trade calibration (src/learning/ is a stub)
 ```
 
-### Fluxo de veto
+### Veto flow
 
-Qualquer estagio pode parar o trade:
+Any stage can stop a trade:
 
 ```
-Pre-Filter VETA      ->  "MQ 22/100 — mercado em chop"
-Strategy VETA        ->  "AGUARDAR — signal bar reprovado"
-AI Overlay VETA      ->  "Regime TRANSITIONING, confianca < 40"
-Risk Engine VETA     ->  "Drawdown 6.2%, circuit breaker ativo"
-Decision Score VETA  ->  "Score 58/100 < threshold 65"
+Pre-Filter VETO       -> "MQ 22/100 — market in chop"
+Strategy VETO         -> "AGUARDAR — signal bar rejected"
+AI Overlay VETO       -> "Regime TRANSITIONING, confidence < 40"
+Risk Engine VETO      -> "Drawdown 6.2%, circuit breaker active"
+Decision Score VETO   -> "Score 58/100 < threshold 65"
 ```
 
-### Tech Stack
+### Tech stack
 
-- **Python 3.10+** + `websockets` + `aiohttp` — motor de percepcao e orquestracao
+- **Python 3.10+** + `websockets` + `aiohttp` — perception and orchestration engine
 - **Kraken CLI** — execution layer (paper trading + market data)
-- **OpenAI GPT-4o** (temperature: 0.1) — motor de raciocinio (single-call structured output)
+- **OpenAI GPT-4o** (temperature: 0.1) — reasoning engine (single-call structured output)
 - **Web3** + `eth-account` — ERC-8004 on-chain (Sepolia)
 
 ---
 
-## Trading Sessions
+## Trading sessions
 
-BTC/USD operates 24/7 but liquidity varies drastically. The agent adapts its price action methodology (originally designed for indices with clear open/close) to crypto by defining three operating modes:
+BTC/USD trades 24/7 but liquidity varies drastically. The agent adapts its price action methodology (originally designed for indices with a clear open and close) to crypto by defining three operating modes:
 
 ```
 AGGRESSIVE    Mon-Fri 13:30-21:00 UTC (NY session)
               All setups allowed. Threshold 65. Full sizing.
-              This is when 70% of BTC volume happens.
+              This is when ~70% of BTC volume happens.
 
 CONSERVATIVE  Mon-Fri 07:00-13:30 UTC (London) + Weekends 07:00-21:00 UTC
               Only Second Entry and Breakout Pullback. Threshold 75. Sizing 60%.
-              Market has structure but less volume.
+              The market has structure but less volume.
 
 OBSERVATION   Every day 21:00-07:00 UTC
               No trading. Collects data, computes features.
@@ -220,295 +224,289 @@ Weekend: never enters aggressive mode (no institutional volume). Operates conser
 
 ## Decision Scoring System
 
-Cada trade gera um score composto de 4 sub-scores:
+Each trade produces a composite score made of 4 sub-scores:
 
-| Sub-Score | Fonte | O que mede | Peso |
+| Sub-score | Source | What it measures | Weight |
 |---|---|---|---|
-| Market Quality (MQ) | Pre-Filter | Operabilidade do mercado (chop, volatilidade, sessao) | 20% |
-| Strategy Score (SS) | Python LLM RAG | Qualidade do setup segundo a PA KB | 35% |
-| AI Overlay Score (AO) | AI Layer | Confirmacao por regime, volume, multi-TF | 20% |
-| Risk Score (RS) | Risk Engine | Saude do capital e viabilidade de risco | 25% |
+| Market Quality (MQ) | Pre-Filter | How tradeable the market is (chop, volatility, session) | 20% |
+| Strategy Score (SS) | Python LLM RAG | Setup quality per the PA KB | 35% |
+| AI Overlay Score (AO) | AI Layer | Confirmation by regime, volume, multi-TF | 20% |
+| Risk Score (RS) | Risk Engine | Capital health and risk feasibility | 25% |
 
-**Regras:**
-- Score final > 65 = executa
-- Qualquer sub-score < 20 = hard veto (nao executa independente do total)
-- Pesos sao adaptativos (ajustados pelo Learning Loop)
+**Rules:**
+- Final score > 65 → executes
+- Any sub-score < 20 → hard veto (does not execute regardless of total)
+- Weights are adaptive (tuned by the Learning Loop)
 
-**Exemplo:**
+**Example:**
 ```
-Market Quality:  85 x 0.20 = 17.0   (trending, ATR saudavel)
-Strategy:        82 x 0.35 = 28.7   (Second Entry H2, tipo_dia claro)
-AI Overlay:      75 x 0.20 = 15.0   (regime alinhado, 5m confirma)
+Market Quality:  85 x 0.20 = 17.0   (trending, healthy ATR)
+Strategy:        82 x 0.35 = 28.7   (Second Entry H2, clear day type)
+AI Overlay:      75 x 0.20 = 15.0   (regime aligned, HTF confirms)
 Risk:            71 x 0.25 = 17.8   (drawdown 1.5%, R/R 2.1)
-TOTAL: 78.5 > 65 -> EXECUTA
+TOTAL: 78.5 > 65 -> EXECUTE
 ```
 
 ---
 
-## RAG Cirurgico Top-Down
+## Surgical Top-Down RAG
 
-### Por que Top-Down
+### Why top-down
 
-Na metodologia *"context is everything"* — um reversal bar no topo de um Trend from the Open e uma armadilha; o mesmo bar apos um Spike and Channel pode ser entrada de alta probabilidade. Sem o contexto macro, o sinal micro nao tem significado.
+In the methodology, *"context is everything"* — a reversal bar at the top of a Trend From the Open is a trap; the same bar after a Spike and Channel can be a high-probability entry. Without macro context, the micro signal has no meaning.
 
-### As 5 camadas
+### The 5 layers
 
 ```
-ETAPA 1 — CONTEXTO DO DIA           [tabela: rag_layer1_day_type]
-  Classifica: trend_from_open | spike_and_channel | trending_trading_range
-              reversal_day | trend_resumption | indefinido
-  Fontes: Cap. 21, 22, 23
+LAYER 1 — DAY TYPE
+  Classify: trend_from_open | spike_and_channel | trending_trading_range
+            reversal_day | trend_resumption | indefinido
+  Source: Nogran PA KB layer1 chunks
 
-ETAPA 2 — MACRO / ALWAYS-IN         [tabela: rag_layer2_macro]
-  Determina: SEMPRE_COMPRADO | SEMPRE_VENDIDO | NEUTRO
-  Verifica: Two Legs, sinais de forca
-  Fontes: Cap. 1, 19, 20
+LAYER 2 — MACRO / ALWAYS-IN
+  Determine: SEMPRE_COMPRADO | SEMPRE_VENDIDO | NEUTRO
+  Verify: Two Legs, signs of strength
+  Source: Nogran PA KB layer2 chunks
 
-ETAPA 3 — ESTRUTURA                  [tabela: rag_layer3_structure]
-  Mapeia: trend lines, canais, suportes/resistencias
-  Fontes: Cap. 3, 13
+LAYER 3 — STRUCTURE
+  Map: trend lines, channels, supports/resistances
+  Source: Nogran PA KB layer3 chunks
 
-ETAPA 4 — MICRO / BARRA ATUAL       [tabela: rag_layer4_micro]
-  Classifica: trend bar | doji | climax
-  Avalia: signal bar APROVADO ou REPROVADO
-  Fontes: Cap. 2, 4, 5
+LAYER 4 — MICRO / CURRENT BAR
+  Classify: trend bar | doji | climax
+  Evaluate: signal bar APPROVED or REJECTED
+  Source: Nogran PA KB layer4 chunks
 
-ETAPA 5 — SETUP E GATILHO           [tabela: rag_layer5_setup]
-  Hierarquia: Second Entry > Breakout Pullback > H2/L2 > ii > Shaved bar
-  Calcula: entry, stop, target (R/R >= 1.5 obrigatorio)
-  Fontes: Cap. 6, 10
+LAYER 5 — SETUP AND TRIGGER
+  Hierarchy: Second Entry > Breakout Pullback > H2/L2 > ii > Shaved bar
+  Compute: entry, stop, target (R/R >= 1.5 mandatory)
+  Source: Nogran PA KB layer5 chunks
 ```
 
-### Por que apenas 9 capitulos
+### Why only 9 essential chapters
 
-- **Retrieval pollution:** chunks sobre psicologia ou padroes raros contaminam a busca semantica
-- **Latencia:** mais chunks = mais candidatos = resposta mais lenta
-- **Contradicoes:** regras evoluem ao longo do material; RAG com tudo pode trazer a versao rasa junto com a refinada
+- **Retrieval pollution:** chunks about psychology or rare patterns contaminate semantic search
+- **Latency:** more chunks = more candidates = slower response
+- **Contradictions:** rules evolve across the source material; a RAG with everything can return the shallow version alongside the refined one
 
-### Separacao em tabelas pgvector distintas
+### Layer isolation
 
-5 tabelas separadas no Postgres (uma por camada) garantem isolamento perfeito do retrieval. Chunks de camadas diferentes nao "vazam" para a consulta errada.
+Each layer is stored in its own JSON chunk file (`data/chunks/layer{0..5}_*.json`, gitignored — sourced from a private dataset repo). The deterministic `PARetriever` (`src/strategy/pa_retriever.py`) selects 1 base + 1 conditional chunk per layer based on the current FeatureSnapshot — no embeddings, no vector DB, full reproducibility.
 
 ---
 
 ## Risk Engine
 
-Modulo independente do LLM — funciona mesmo se o LLM falhar completamente.
+A module independent of the LLM — works even if the LLM fails completely.
 
-| Componente | O que faz |
+| Component | What it does |
 |---|---|
-| **Position Sizing** | Dinamico: ATR + Decision Score + drawdown atual + Learning Loop |
-| **Stop Adaptativo** | ATR-based, ajustado por tipo de barra e swing points |
-| **Drawdown Bands** | 0-3% normal, 3-5% defensivo (60%), 5-8% minimo (30%), >8% circuit breaker |
-| **Exposure Manager** | Max 1 posicao, cooldown pos-trade, tempo maximo 30 min |
-| **Circuit Breakers** | 3 losses seguidos, drawdown >8%, Sharpe <-1.0, latencia >10s |
-| **Metricas** | Sharpe rolling, max drawdown, winrate, expectancy, profit factor |
+| **Position Sizing** | Dynamic: ATR + Decision Score + current drawdown + Learning Loop |
+| **Adaptive Stop** | ATR-based, adjusted by bar type and swing points |
+| **Drawdown Bands** | 0–3% normal, 3–5% defensive (60%), 5–8% minimum (30%), > 8% circuit breaker |
+| **Exposure Manager** | Max 1 position, post-trade cooldown, max hold 4h on 15m exec |
+| **Circuit Breakers** | 3 consecutive losses, drawdown > 8%, Sharpe < -1.0, latency > 10s |
+| **Metrics** | Rolling Sharpe, max drawdown, win rate, expectancy, profit factor |
 
 ---
 
 ## AI Layer
 
-Opera DEPOIS do RAG e ANTES do Risk Engine. Nao substitui nenhum dos dois.
+Runs AFTER the RAG and BEFORE the Risk Engine. Replaces neither.
 
-| Componente | O que faz |
+| Component | What it does |
 |---|---|
-| **Regime Detector** | Classifica TRENDING / RANGING / TRANSITIONING (ADX + ATR + overlap) |
-| **Multi-TF Confirmation** | 5m confirma ou contradiz o sinal do 1m |
-| **Confidence Adjuster** | 10 fatores de ajuste (regime, volume, 5m, revenge, sessao, ATR) |
-| **Target Optimizer** | Ajusta take profit por regime e winrate recente |
-| **Overtrading Brake** | Max 4 trades/hora, exige maior qualidade apos 2+ trades |
+| **Regime Detector** | Classifies TRENDING / RANGING / TRANSITIONING (ADX + ATR + overlap) |
+| **Multi-TF Confirmation** | 1h HTF either confirms or contradicts the 15m signal |
+| **Confidence Adjuster** | 10 adjustment factors (regime, volume, HTF, revenge, session, ATR) |
+| **Target Optimizer** | Adjusts take profit by regime and recent win rate |
+| **Overtrading Brake** | Max 4 trades/hour, requires higher quality after 2+ trades |
 
 ---
 
 ## Learning Loop
 
-Calibracao deterministica (sem ML, sem black box) que ajusta parametros por performance:
+Deterministic calibration (no ML, no black box) that adjusts parameters by performance:
 
-| O que ajusta | Como |
+| What it adjusts | How |
 |---|---|
-| Execution threshold | Sobe se winrate < 35%, desce se > 55% |
-| Pesos do Decision Score | Correlacao sub-score vs PnL (a cada 20 trades) |
-| Position sizing | Reduz com drawdown, aumenta em equity ATH |
-| Cooldown | Aumenta apos losses consecutivos |
+| Execution threshold | Up if win rate < 35%, down if > 55% |
+| Decision Score weights | Sub-score vs PnL correlation (every 20 trades) |
+| Position sizing | Reduces with drawdown, increases at equity ATH |
+| Cooldown | Increases after consecutive losses |
 
-**Guardrails:** threshold 55-80, pesos 0.10-0.50, sizing 0.3-1.0x. O loop nunca desestabiliza o sistema.
+**Guardrails:** threshold 55–80, weights 0.10–0.50, sizing 0.3–1.0×. The loop never destabilises the system.
 
 ---
 
 ## ERC-8004 (On-Chain — Sepolia Testnet)
 
-Cada decisao gera um TradeIntent assinado com rastreabilidade completa:
+Each decision generates a signed TradeIntent with full traceability:
 
 - **Agent Identity:** ERC-721 registered on AgentRegistry (Sepolia: `0x97b0...ca3`)
-- **TradeIntent:** assinado com EIP-712 ANTES da execucao, inclui Decision Score decomposto
-- **Audit Trail:** JSONL append-only com decisao + execucao + outcome
-- **Reputacao:** Feedback on-chain no Reputation Registry
+- **TradeIntent:** signed with EIP-712 BEFORE execution, includes the decomposed Decision Score
+- **Audit Trail:** append-only JSONL with decision + execution + outcome
+- **Reputation:** on-chain feedback in the Reputation Registry
 
 ---
 
-## Alpha (Edge)
+## Alpha (edge)
 
-O sistema tem 4 fontes de alpha complementares:
+The system has 4 complementary alpha sources:
 
-### 1. Comportamento repetitivo em Price Action
+### 1. Repetitive behaviour in price action
 
-Crypto em timeframes baixos apresenta padroes recorrentes de price action. O RAG consulta a Nogran PA KB com probabilidades verificaveis, nao "intuicao" do LLM.
+Crypto on low timeframes shows recurring price action patterns. The RAG queries the Nogran PA KB with verifiable probabilities, not LLM "intuition".
 
-### 2. Filtragem superior de sinais ruins
+### 2. Superior filtering of bad signals
 
-De cada 100 velas, o agente opera 3-5. Pipeline de 5 estagios com veto independente elimina trades de baixa qualidade antes que destruam capital.
+Out of every 100 candles the agent trades 3–5. A 5-stage pipeline with independent vetoes eliminates low-quality trades before they destroy capital.
 
-### 3. Risk management como alpha
+### 3. Risk management as alpha
 
-Position sizing proporcional ao Decision Score. Aposta mais quando o edge e claro, menos quando e duvidoso. Drawdown bands reduzem exposicao gradualmente.
+Position sizing is proportional to the Decision Score. The agent bets more when the edge is clear, less when it's doubtful. Drawdown bands reduce exposure progressively.
 
-### 4. Tempo como filtro
+### 4. Time as a filter
 
-A maior parte do tempo o agente esta em AGUARDAR. Cada trade que NAO fazemos em mercado choppy e capital preservado.
+Most of the time the agent is in AGUARDAR (wait). Every trade we don't take in a choppy market is preserved capital.
 
-**Hipotese central:**
-> "Reduzindo trades de baixa qualidade e controlando risco de forma agressiva, e possivel obter melhor retorno ajustado ao risco do que estrategias tradicionais."
+**Central hypothesis:**
+> "By cutting low-quality trades and controlling risk aggressively, it is possible to achieve a better risk-adjusted return than traditional strategies."
 
 ---
 
-## Decisoes Arquiteturais
+## Architectural decisions
 
-| Decisao | Motivacao |
+| Decision | Motivation |
 |---|---|
-| LLM nao executa trades | Evitar alucinacao, manter controle deterministico |
-| Multi-layer validation (5 estagios) | Protecao de capital, redundancia, robustez |
-| Decision Scoring System | Explicabilidade, comparacao entre trades, base para reputacao |
-| PA KB + hallucination detector | Cross-check independente, alarme mensuravel, citacao auditavel |
-| Learning Loop controlado | Melhorar performance sem overfitting ou instabilidade |
-| Arquitetura hexagonal | Testabilidade, flexibilidade, facilidade de evolucao |
-| RAG Top-Down | Reduzir ruido, evitar confusao do LLM, qualidade das decisoes |
-| Risk Engine como autoridade final | Protecao de capital, alinhamento com Sharpe |
+| The LLM does not execute trades | Avoid hallucination, keep deterministic control |
+| Multi-layer validation (5 stages) | Capital protection, redundancy, robustness |
+| Decision Scoring System | Explainability, trade comparability, foundation for reputation |
+| PA KB + hallucination detector | Independent cross-check, measurable alarm, auditable citation |
+| Controlled Learning Loop | Improve performance without overfitting or instability |
+| Hexagonal architecture | Testability, flexibility, ease of evolution |
+| Top-down RAG | Reduce noise, avoid LLM confusion, decision quality |
+| Risk Engine as final authority | Capital protection, alignment with Sharpe |
 
-**Principio central:**
-> "O sistema assume que a IA pode estar errada e exige validacao antes de arriscar capital."
+**Core principle:**
+> "The system assumes the AI may be wrong and demands validation before risking capital."
 
 ---
 
-## 8 Camadas contra Alucinacao
+## 8 layers against hallucination
 
-| # | Camada | O que previne |
+| # | Layer | What it prevents |
 |---|---|---|
-| 1 | Fato matematico (nao grafico) | LLM nao "ve" patterns que nao existem |
-| 2 | RAG Top-Down (nao bottom-up) | Contexto macro determina significado micro |
-| 3 | 5 tabelas pgvector isoladas | Chunks nao contaminam entre camadas |
-| 4 | Temperature 0.1 | Minimiza criatividade (queremos consistencia) |
-| 5 | Validador JSON + R/R | Bloqueia output malformado |
-| 6 | AI Overlay pos-LLM | Python verifica coerencia com dados reais |
-| 7 | Decision Score < 65 = veto | Qualidade insuficiente nao passa |
-| 8 | **PA KB hallucination detector** | **Cross-check independente vs 62 setups da PA KB; alarme em tempo real se LLM diverge >=25 pts** |
+| 1 | Mathematical fact (not chart) | LLM does not "see" patterns that don't exist |
+| 2 | Top-down RAG (not bottom-up) | Macro context determines micro meaning |
+| 3 | Per-layer chunk isolation | Chunks do not contaminate across layers |
+| 4 | Temperature 0.1 | Minimises creativity (we want consistency) |
+| 5 | JSON validator + R/R | Blocks malformed output |
+| 6 | Post-LLM AI Overlay | Python checks coherence with real data |
+| 7 | Decision Score < 65 = veto | Insufficient quality does not pass |
+| 8 | **PA KB hallucination detector** | **Independent cross-check vs the 62 KB setups; real-time alarm if the LLM diverges by ≥ 25 pts** |
 
-A camada 8 e a Nogran Price Action Knowledge Base — uma base curada in-house de probabilidades de setups, cross-checked contra referencias open-source publicas. Cada decisao do LLM e blendada com a probabilidade da KB (60% LLM + 40% PA KB) e dispara um alarme estruturado se o gap exceder 25 pontos. O alarme entra no audit trail JSONL, no dashboard, e no checkpoint ERC-8004 — tornando a deteccao de alucinacao **mensuravel e auditavel** em vez de anedotica. Detalhes na secao 9 do ARCHITECTURE.md.
+Layer 8 is the Nogran Price Action Knowledge Base — an in-house curated base of setup probabilities, cross-checked against public open-source references. Every LLM decision is blended with the KB probability (60% LLM + 40% PA KB) and triggers a structured alarm if the gap exceeds 25 points. The alarm lands in the JSONL audit trail, the dashboard, and the ERC-8004 checkpoint — making hallucination detection **measurable and auditable** instead of anecdotal. Details in section 9 of ARCHITECTURE.md.
 
 ---
 
-## Referencias Tecnicas e Inspiracao
+## Technical references and inspiration
 
-Este projeto usa referencias externas como fonte de ideias para componentes especificos. A arquitetura, a estrategia e a integracao sao originais.
+This project uses external references as a source of ideas for specific components. The architecture, the strategy, and the integration are original.
 
-| Componente | Referencia | O que foi aproveitado | O que foi ignorado/adaptado |
+| Component | Reference | What we kept | What we ignored / adapted |
 |---|---|---|---|
-| Feature Engineering | **Qlib** (Microsoft) | Conceito de features como funcoes puras sobre OHLCV. Separacao dados/logica | Framework inteiro (nosso scope e 3 indicadores, nao 158). Qlib e para portfolio, nos operamos 1 par |
-| Risk Metrics | **pyfolio** / **ffn** | Formulas de Sharpe, max drawdown, profit factor. Definicoes padrao da industria | Visualizacao e tear sheets. Nosso calculo e rolling e em tempo real, nao pos-hoc |
-| Execution Layer | **freqtrade** | Pattern de order lifecycle (create -> fill -> track -> close). Uso de CCXT como adapter | Todo o framework. Nos usamos CCXT diretamente com 1 exchange (Kraken) |
-| Smart Contracts | **OpenZeppelin** | Patterns de EIP-712 signing. Conceito de metadata hash para identidade (ERC-721) | Contracts em Solidity. Nos simulamos em Python para o hackathon |
-| Regime Detection | Papers academicos (Hamilton 1989, Ang & Bekaert 2002) | Conceito de regime switching em mercados financeiros | HMM e modelos estatisticos complexos. Nosso detector e rule-based com ADX + ATR |
-| Decision Scoring | Credit scoring (industria financeira) | Conceito de score composto com sub-scores ponderados e hard veto | ML-based scoring. Nosso scoring e deterministico com pesos adaptativos |
-| RAG Top-Down | Nogran PA KB (in-house) | Probabilidades de setups + hard rules curados | Conteudo de terceiros — a arquitetura de 5 camadas e invencao propria |
+| Feature Engineering | **Qlib** (Microsoft) | Concept of features as pure functions over OHLCV. Data/logic separation. | The whole framework (our scope is 3 indicators, not 158). Qlib is for portfolios; we trade a single pair. |
+| Risk Metrics | **pyfolio** / **ffn** | Sharpe, max drawdown, profit factor formulas. Industry-standard definitions. | Visualisation and tear sheets. Our calculation is rolling and real-time, not post-hoc. |
+| Execution Layer | **freqtrade** | Order lifecycle pattern (create → fill → track → close). CCXT as adapter. | The whole framework. We use CCXT directly with one exchange (Kraken). |
+| Smart Contracts | **OpenZeppelin** | EIP-712 signing patterns. Metadata hash concept for ERC-721 identity. | Solidity contracts. We sign in Python for the hackathon. |
+| Regime Detection | Academic papers (Hamilton 1989, Ang & Bekaert 2002) | Concept of regime switching in financial markets. | HMM and complex statistical models. Our detector is rule-based with ADX + ATR. |
+| Decision Scoring | Credit scoring (financial industry) | Composite score with weighted sub-scores and hard veto. | ML-based scoring. Ours is deterministic with adaptive weights. |
+| RAG Top-Down | Nogran PA KB (in-house) | Setup probabilities + curated hard rules. | Third-party content — the 5-layer architecture is our own invention. |
 
-### O que NAO foi usado e por que
+### What we did NOT use, and why
 
-| Referencia | Por que nao |
+| Reference | Why not |
 |---|---|
-| Reinforcement Learning (FinRL) | Requer milhoes de episodios. Nao e explicavel. Nosso edge vem de regras verificaveis |
-| Sentiment Analysis | Ruidoso e atrasado. Price Action ja incorpora sentimento (o preco e o consenso) |
-| LLM como decisor unico | Alucinacao, latencia, custo, inconsistencia |
-| Multi-asset | Complexidade desnecessaria. 1 par permite foco total |
+| Reinforcement Learning (FinRL) | Requires millions of episodes. Not explainable. Our edge comes from verifiable rules. |
+| Sentiment Analysis | Noisy and lagging. Price action already incorporates sentiment (the price IS the consensus). |
+| LLM as sole decision-maker | Hallucination, latency, cost, inconsistency. |
+| Multi-asset | Unnecessary complexity. One pair allows full focus. |
 
-**Principio:**
-> "Referencias sao usadas para fortalecer componentes, nao para definir a arquitetura."
-
-Os repositorios de referencia estao em `trader refs/` organizados por camada (AI Layer, Risk Engine, Web3) para consulta durante o desenvolvimento.
+**Principle:**
+> "References are used to strengthen components, not to define the architecture."
 
 ---
 
-## Validacao (Ground Truth Testing)
+## Validation (ground-truth testing)
 
-Validacao usa fixtures sinteticas baseadas em padroes price action conhecidos:
+Validation uses synthetic fixtures based on canonical price action patterns:
 
-1. **Mocks de figuras canonicas** de price action (spike-and-channel, H2/L2, wedge): dados OHLCV que replicam as barras
-2. **Comparacao da decisao do LLM** contra a classificacao esperada
-3. **Criterio:** >= 80% de concordancia nas figuras canonicas antes de paper trading
+1. **Mocks of canonical figures** of price action (spike-and-channel, H2/L2, wedge): OHLCV data that replicates the bars.
+2. **Comparison of the LLM's decision** against the expected classification.
+3. **Criterion:** ≥ 80% agreement on canonical figures before paper trading.
 
-Se o LLM sugere COMPRA num sell climax canonico, o prompt e os chunks sao ajustados — nao o criterio.
+If the LLM suggests COMPRA on a canonical sell climax, the prompt and chunks are adjusted — not the criterion.
 
 ---
 
-## Estrutura do Repositorio
+## Repository structure
 
 ```
 nogran.trader.agent/
 ├── src/
 │   ├── main.py                        # Entry point
-│   ├── domain/                        # Modelos puros (TradeSignal, DecisionScore, etc.)
-│   ├── market/                        # WebSocket, Feature Engine, Pre-Filter
+│   ├── domain/                        # Pure models (TradeSignal, DecisionScore, etc.)
+│   ├── market/                        # WebSocket, Feature Engine, Pre-Filter, swings, regime
 │   ├── strategy/                      # LLM strategy + PA retriever + signal parser + KB
 │   ├── ai/                            # Regime Detector, Confidence Adjuster, Decision Scorer
 │   ├── risk/                          # Position Sizer, Stop Adjuster, Drawdown Controller
-│   ├── learning/                      # Learning Loop (calibracao pos-trade)
+│   ├── learning/                      # Learning Loop (post-trade calibration)
 │   ├── compliance/                    # ERC-8004 (Identity, TradeIntent, Logger, Reputation)
 │   ├── execution/                     # OCO Orders, Executor, Fill Tracker, PnL
 │   ├── telemetry/                     # Trade Journal, Performance Report
 │   └── infra/                         # Config, Indicators (EMA, ATR, ADX)
-├── data/chunks/                       # JSONs dos chunks por camada (gitignored, vem do dataset privado)
+├── data/probabilities/                # PA KB JSON (62 setups + 22 hard rules)
+├── data/chunks/                       # Per-layer JSON chunks (gitignored, sourced from private dataset)
 ├── logs/decisions/                    # Audit trail JSONL
-├── trader refs/                       # Repositorios de referencia
-│   ├── AI Layer/FinRL/                # FinRL — referencia de AI em trading
-│   ├── Risk Engine/pyfolio/           # pyfolio — metricas de performance
-│   ├── Risk Engine/ffn/               # ffn — funcoes financeiras
-│   ├── Web3/openzeppelin-contracts/   # OpenZeppelin — patterns ERC/EIP
-│   └── docs/                          # Documentacao de decisoes e referencias
-│       ├── alpha-hypothesis.md        # Hipotese de geracao de alpha
-│       ├── architecture-decisions.md  # Decisoes arquiteturais
-│       └── references.md             # Mapeamento de referencias
-├── docs/                              # Documentacao tecnica e auditorias
-├── tests/
-├── scripts/
+├── trader refs/docs/                  # Architecture decisions, alpha hypothesis, references
+├── docs/                              # Technical documentation and audits
+├── tests/                             # 386-test pytest suite
+├── scripts/                           # backtest.py, simulate_market.py, setup_erc8004.py
 ├── requirements.txt
 ├── .env.example
-├── SETUP.md                           # Instalacao e configuracao
-└── ARCHITECTURE.md                    # Arquitetura tecnica detalhada (v3)
+├── LICENSE                            # MIT
+├── THIRD_PARTY.md                     # Third-party code/services disclosure
+├── SETUP.md                           # Install and configuration
+└── ARCHITECTURE.md                    # Detailed technical architecture
 ```
 
 ---
 
-## Entregaveis do Hackathon
+## Hackathon deliverables
 
-| Entregavel | Descricao |
+| Deliverable | Description |
 |---|---|
-| **Codigo Python** | Motor completo: percepcao + AI + risk + execucao |
-| **ARCHITECTURE.md** | Documentacao tecnica com Decision Scoring, Learning Loop, Risk Engine |
-| **Audit Trail** | Logs JSONL com Decision Score decomposto por trade |
-| **Video Pitch** | Terminal do agente vs figuras do livro + explicacao do Decision Score |
-| **Relatorio PnL** | Extrato do paper trading com metricas (Sharpe, DD, winrate) |
+| **Python code** | Full engine: perception + AI + risk + execution |
+| **ARCHITECTURE.md** | Technical doc with Decision Scoring, Learning Loop, Risk Engine |
+| **Audit Trail** | JSONL logs with decomposed Decision Score per trade |
+| **Video pitch** | Agent terminal vs canonical PA figures + Decision Score walkthrough |
+| **PnL report** | Paper trading metrics (Sharpe, drawdown, win rate) |
 
 ---
 
 ## Pitch
 
-> **O problema:** Bots de trading com IA falham porque o LLM alucina padroes que nao existem, ou porque a IA e apenas decorativa. Sem controle real de risco, o capital e destruido.
+> **The problem:** AI trading bots fail because the LLM hallucinates patterns that don't exist, or because the AI is just decorative. With no real risk control, capital is destroyed.
 
-> **A solucao:** O nogran.trader.agent separa percepcao (Python), interpretacao (LLM com RAG Top-Down sobre a Nogran PA KB), filtragem (regime detection + confidence adjustment), e controle de risco (Risk Engine independente). O LLM nunca toca dados brutos e nunca pode sobrescrever o Risk Engine.
+> **The solution:** nogran.trader.agent separates perception (Python), interpretation (LLM with top-down RAG over the Nogran PA KB), filtering (regime detection + confidence adjustment), and risk control (independent Risk Engine). The LLM never touches raw data and can never override the Risk Engine.
 
-> **O diferencial:** Cada trade passa por um Decision Score de 4 sub-scores auditaveis — so executa acima de 65/100. Um Learning Loop calibra thresholds por performance real. Cada decisao gera um TradeIntent assinado (ERC-8004). De cada 100 velas, o agente opera 3-5.
+> **The differentiator:** every trade goes through a Decision Score made of 4 auditable sub-scores — only executes above 65/100. A Learning Loop calibrates thresholds against real performance. Every decision generates a signed TradeIntent (ERC-8004). Out of every 100 candles, the agent trades 3–5.
 
-> *O agente mais disciplinado do hackathon. Ele nao ganha por operar mais — ganha por saber quando nao operar.*
+> *The most disciplined agent in the hackathon. It doesn't win by trading more — it wins by knowing when not to trade.*
 
 ---
 
-> Para detalhes tecnicos (pseudo-codigo, formulas, exemplos), veja [ARCHITECTURE.md](./ARCHITECTURE.md).
-> Para instalacao e configuracao, veja [SETUP.md](./SETUP.md).
+> For technical detail (pseudo-code, formulas, examples), see [ARCHITECTURE.md](./ARCHITECTURE.md).
+> For install and configuration, see [SETUP.md](./SETUP.md).
+> Third-party disclosure: [THIRD_PARTY.md](./THIRD_PARTY.md). License: [MIT](./LICENSE).
