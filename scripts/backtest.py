@@ -838,6 +838,34 @@ def run_backtest(
             })
             continue
 
+        # ----- Fix D: HTF (1h) directional veto -----
+        # Block trades that fight the 1h trend. Diagnosis from r1_full_C_d60_90:
+        # 10/12 trades were LONG in a bear period because the LLM ignored the
+        # tf_1h_direction='down' field in the prompt. Enforce in code.
+        # Only veto when the HTF reading is available (early bars have None).
+        htf_dir = features.tf_1h_direction
+        if htf_dir is not None:
+            if signal.action == Action.COMPRA and htf_dir == "down":
+                stats["htf_vetoes"] = stats.get("htf_vetoes", 0) + 1
+                stats["no_go"] += 1
+                writer.log_decision({
+                    "candle_index": idx,
+                    "timestamp": candle.timestamp,
+                    "veto": "htf_long_in_downtrend",
+                    "mq": mq_score,
+                })
+                continue
+            if signal.action == Action.VENDA and htf_dir == "up":
+                stats["htf_vetoes"] = stats.get("htf_vetoes", 0) + 1
+                stats["no_go"] += 1
+                writer.log_decision({
+                    "candle_index": idx,
+                    "timestamp": candle.timestamp,
+                    "veto": "htf_short_in_uptrend",
+                    "mq": mq_score,
+                })
+                continue
+
         # Override stop/target with ATR-tuned values ONLY for the mock heuristic.
         # The mock generates fixed RR=2.0 hardcoded; we override so --rr CLI flag
         # actually changes effective RR. But for LLM signals, we TRUST the LLM's

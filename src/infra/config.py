@@ -42,7 +42,12 @@ class Config:
     # (was 7.5h). Empirical: in v1.5 2880c backtest 5 of 12 trades expired in
     # full 7.5h without hitting stop or target — targets were ambitious enough
     # that price never reached them. 4h is the realistic intraday ceiling.
-    MAX_POSITION_TIME_CANDLES: int = 16
+    # 2026-04-09 (Fix B, after diagnosis): bumped 16 → 32 (8h max hold).
+    # The Window C diagnosis showed 6/12 trades timed out at 16 bars (50% of
+    # the sample) with rr_realized ≈ 0 — positions sat for the full 4h without
+    # reaching either stop or target. Doubling the cap gives the target more
+    # time to print without changing entry quality.
+    MAX_POSITION_TIME_CANDLES: int = 32
     MIN_REWARD_RISK: float = 1.5
     ATR_STOP_MULTIPLIER: float = 1.5
 
