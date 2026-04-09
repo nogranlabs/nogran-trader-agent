@@ -11,6 +11,7 @@ Trade executa SOMENTE se Decision Score > 65 e nenhum sub-score < 20.
 - Python 3.10+ (asyncio), ccxt.pro (WebSocket), Kraken CLI (paper trading)
 - OpenAI GPT-4o (single-call structured output) — provider-agnostic via `LLMStrategy`
 - Web3.py + eth-account: contratos Sepolia (ERC-8004 hackathon)
+- Agent0 SDK (opcional, `pip install agent0-sdk==1.7.0`): camada de discovery OASF — `src/compliance/agent0_discovery.py`. Trading pipeline NAO depende dela.
 - Dashboard: Streamlit + Plotly
 - Testes: pytest
 

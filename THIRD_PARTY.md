@@ -30,6 +30,7 @@ compatible:
 | `python-dotenv` (1.2.2) | BSD-3-Clause | `.env` loader |
 | `web3` (>=6.0) | MIT | ERC-8004 on-chain (optional) |
 | `eth-account` (>=0.10) | MIT | EIP-712 signing of TradeIntents (optional) |
+| `agent0-sdk` (1.7.0) | Apache-2.0 (per upstream) | Optional ERC-8004 discovery layer — used by `src/compliance/agent0_discovery.py` to publish OASF skills/domains. The trading pipeline does NOT depend on it. Install only if you want OASF discoverability. |
 
 ## Test / dev dependencies
 

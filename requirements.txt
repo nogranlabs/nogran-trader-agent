@@ -13,3 +13,11 @@ pydantic>=2.0,<3.0
 # ERC-8004 (Sepolia) — install when running compliance/erc8004_onchain.py
 # web3>=6.0
 # eth-account>=0.10
+
+# Agent0 SDK — official ERC-8004 SDK from agent0lab.
+# Used by src/compliance/agent0_discovery.py to enrich the on-chain agent
+# with OASF skills/domains and MCP/A2A endpoints (discoverability layer).
+# Optional — the trading pipeline (TradeIntent + RiskRouter) uses our own
+# hand-rolled web3.py code in compliance/erc8004_onchain.py because Agent0
+# SDK does not cover those flows.
+# agent0-sdk==1.7.0
