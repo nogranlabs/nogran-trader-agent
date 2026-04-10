@@ -147,14 +147,15 @@ Nogran PA reads markets via swing highs and swing lows. Before any other analysi
 
 4. **FEE-AWARE TRADER'S EQUATION.** Trading fees on Kraken are 0.16-0.26% per side = 0.32-0.52% round-trip. Plus slippage ~0.05%. **Total cost per trade ~0.4% of notional.**
 
-   **MANDATORY: target_distance >= 1.0% of entry_price.** Combined with rule #3 (stop >= 0.5%), this gives effective minimum RR = 2.0 in the typical case.
+   **MANDATORY: target_distance >= 0.5% of entry_price.** Combined with rule #3 (stop >= 0.5%), this gives effective minimum RR = 1.0 in the typical case. Higher RR (1.5+) is preferred when the structure supports it.
 
    **MANDATORY: Reward/Risk ratio >= 1.0** (computed as target_distance / stop_distance). Accept 1:1 RR for high-probability setups (shaved bars in strong trends, second entries, etc.) where the setup probability (>= 60%) compensates the low RR. **Prefer RR 1.5+ when possible**, but do not refuse a valid setup just because RR is exactly 1.0 — the trader's equation is positive when probability is high enough.
 
    **EXAMPLE math at $70000 BTC with ATR $80:**
    - Bad: stop $80 (0.11%, < 0.5% rule #3), target $200. **REJECT** (stop too tight).
-   - OK: stop $400 (0.57%), target $700 (1.0%, RR 1.75). **ACCEPT** if signal confirms.
-   - Good: stop $700 (1.0%), target $1400 (2.0%, RR 2.0). **ACCEPT**.
+   - OK: stop $350 (0.50%), target $350 (0.50%, RR 1.0). **ACCEPT** — minimum viable.
+   - Good: stop $400 (0.57%), target $700 (1.0%, RR 1.75). **ACCEPT**.
+   - Best: stop $700 (1.0%), target $1400 (2.0%, RR 2.0). **ACCEPT**.
 
 5. **Confidence honest.** 50 = "neutral", 70 = "good setup", 85+ = "excellent, high conviction". Confidences above 90 are rare and suspicious.
 

@@ -217,8 +217,18 @@ class TuningParams:
     # combined with multi-TF confirmation (#63), but it is OFF by default.
     bias_window: int = 0                            # tamanho da janela do BiasTracker (0 = desabilitado)
     bias_max_ratio: float = 0.8                     # >= esse ratio na mesma direcao = veto
+    # KB diagnostic flags (added 2026-04-09 for the post-hoc 3-test analysis)
+    no_kb_blend: bool = False                       # Test #1: skip KB enrichment entirely (LLM solo)
+    halu_threshold: int | None = None               # Test #2: override hallucination gap threshold (default 25)
+    clamp_kb_prob: int | None = None                # Test #3: clamp every KB probability to <= this value
     breakeven_enabled: bool = True                  # mover stop pra entry quando price atinge trigger_rr * risco
-    breakeven_trigger_rr: float = 1.0               # RR no qual o stop e movido (1.0 = 1x risco em lucro)
+    breakeven_trigger_rr: float = 1.5               # RR at which the stop ratchets to entry+buffer.
+                                                    # 2026-04-09 (Fix #2): bumped 1.0 → 1.5 after the
+                                                    # paid 10d Window C run. Trade #4 reached 1R, BE
+                                                    # ratcheted to entry+0.1R, then price retraced and
+                                                    # stopped at +0.5R instead of timing out at +0.83R.
+                                                    # Bumping the trigger to 1.5R means BE only fires on
+                                                    # trades that already have a meaningful cushion.
 
 # Bars-per-year pra anualizacao Sharpe/Sortino
 BARS_PER_YEAR_BY_TIMEFRAME = {
@@ -757,7 +767,10 @@ def run_backtest(
     feature_engine = FeatureEngine()
     buf_1m = CandleBuffer(maxlen=200)
     decision_scorer = DecisionScorer()
-    kb = ProbabilitiesKB()
+    kb = ProbabilitiesKB(
+        clamp_max_pct=tuning.clamp_kb_prob,
+        hallucination_threshold=tuning.halu_threshold,
+    )
     dd_controller = DrawdownController()
     bars_per_hour = BARS_PER_HOUR_BY_TIMEFRAME.get(timeframe, 12)
     exposure_mgr = BacktestExposureManager(
@@ -947,7 +960,11 @@ def run_backtest(
         # else: trust LLM stop/target as returned
 
         # ----- Stage 4: KB enrichment + hallucination detector -----
-        enriched = calculate_strategy_score_with_kb(signal, kb=kb)
+        # Test #1 (no_kb_blend): pass kb=None to skip blend entirely (LLM solo)
+        enriched = calculate_strategy_score_with_kb(
+            signal,
+            kb=None if tuning.no_kb_blend else kb,
+        )
         ss_score = enriched.blended_score
         if enriched.alarm:
             stats["alarms"] += 1
@@ -1265,10 +1282,20 @@ def main():
                              "(default: veto warning/critical alarms)")
     parser.add_argument("--no-breakeven", action="store_true",
                         help="disable the breakeven stop ratchet (default: ratchet at RR 1.0)")
-    parser.add_argument("--breakeven-trigger-rr", type=float, default=1.0,
-                        help="RR multiple at which the stop is moved to entry (default 1.0)")
+    parser.add_argument("--breakeven-trigger-rr", type=float, default=None,
+                        help="RR multiple at which the stop is moved to entry "
+                             "(default None = use TuningParams default 1.5)")
     parser.add_argument("--no-rag", action="store_true",
                         help="disable PA RAG retriever (LLM sees only system prompt + features)")
+    # KB diagnostic flags
+    parser.add_argument("--no-kb-blend", action="store_true",
+                        help="Test #1: skip KB enrichment blend (LLM solo, no PA KB anchor)")
+    parser.add_argument("--halu-threshold", type=int, default=None,
+                        help="Test #2: override hallucination gap threshold (default 25). "
+                             "Lower = more sensitive = more vetoes.")
+    parser.add_argument("--clamp-kb-prob", type=int, default=None,
+                        help="Test #3: clamp every KB setup probability_pct to <= this value. "
+                             "Tests the hypothesis that the KB book values are over-optimistic for BTC 15m.")
     args = parser.parse_args()
 
     # Inject provider/model into module-level globals for _get_llm_strategy()
@@ -1294,8 +1321,11 @@ def main():
         strategy_source=args.strategy_source,
         require_kb_match=not args.allow_no_kb,
         veto_hallucination=not args.allow_hallucination,
+        no_kb_blend=args.no_kb_blend,
+        halu_threshold=args.halu_threshold,
+        clamp_kb_prob=args.clamp_kb_prob,
         breakeven_enabled=not args.no_breakeven,
-        breakeven_trigger_rr=args.breakeven_trigger_rr,
+        **({'breakeven_trigger_rr': args.breakeven_trigger_rr} if args.breakeven_trigger_rr is not None else {}),
     )
 
     # Resolve output dir

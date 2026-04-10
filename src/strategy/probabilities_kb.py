@@ -104,8 +104,25 @@ class ProbabilitiesKB:
     Carrega o JSON uma vez na inicializacao. Lookup O(1) por setup_id.
     """
 
-    def __init__(self, kb_path: Path | str | None = None):
+    def __init__(
+        self,
+        kb_path: Path | str | None = None,
+        clamp_max_pct: int | None = None,
+        hallucination_threshold: int | None = None,
+    ):
+        """
+        Args:
+            kb_path: path to the KB JSON file
+            clamp_max_pct: if set, clamp every setup's probability_pct to
+                min(original, clamp_max_pct). Used for diagnostic Test #3
+                ("the book values are too optimistic for BTC 15m").
+            hallucination_threshold: if set, override the gap threshold
+                that triggers a hallucination alarm. Default 25. Used for
+                diagnostic Test #2 (tighter alarm).
+        """
         self.kb_path = Path(kb_path) if kb_path else DEFAULT_KB_PATH
+        self.clamp_max_pct = clamp_max_pct
+        self.halu_threshold = hallucination_threshold or HALLUCINATION_GAP_THRESHOLD
         self.setups: dict[str, dict] = {}
         self.hard_rules: list[dict] = []
         self.metadata: dict = {}
@@ -118,6 +135,18 @@ class ProbabilitiesKB:
         try:
             data = json.loads(self.kb_path.read_text(encoding="utf-8"))
             self.setups = {s["setup_id"]: s for s in data.get("setups", [])}
+            # Test #3: clamp KB probabilities — assume the book values are
+            # over-optimistic for BTC 15m. Replaces every setup probability
+            # with min(original, clamp_max_pct).
+            if self.clamp_max_pct is not None:
+                for sid, s in self.setups.items():
+                    orig = s.get("probability_pct", 0)
+                    if orig > self.clamp_max_pct:
+                        s["probability_pct"] = self.clamp_max_pct
+                logger.info(
+                    f"ProbabilitiesKB: clamped all setup probabilities to "
+                    f"<= {self.clamp_max_pct} (Test #3)"
+                )
             self.hard_rules = data.get("hard_rules", [])
             self.metadata = {
                 "version": data.get("version"),
@@ -221,7 +250,8 @@ class ProbabilitiesKB:
         """
         gap = llm_score - match.probability_pct
         abs_gap = abs(gap)
-        if abs_gap < HALLUCINATION_GAP_THRESHOLD:
+        # Use the instance-level threshold (allows Test #2 override).
+        if abs_gap < self.halu_threshold:
             return None
 
         direction = "llm_too_optimistic" if gap > 0 else "llm_too_pessimistic"
