@@ -1,21 +1,21 @@
 # SETUP — nogran.trader.agent
 
-> Guia de instalacao, configuracao e execucao.
-> Para arquitetura e decisoes, veja [README.md](./README.md).
-> Para detalhes tecnicos, veja [ARCHITECTURE.md](./ARCHITECTURE.md).
+> Install, configuration and execution guide.
+> For architecture and design decisions, see [README.md](./README.md).
+> For technical detail, see [ARCHITECTURE.md](./ARCHITECTURE.md).
 
 ---
 
-## Quick start com Docker (recomendado para juizes)
+## Quick start with Docker (recommended for judges)
 
-Demo do dashboard em 1 comando, sem nenhuma dependencia local alem do Docker:
+Dashboard demo in one command, with no local dependency other than Docker:
 
 ```bash
 docker compose up
-# abrir http://localhost:8501 (DEMO_MODE=1, dados sinteticos)
+# open http://localhost:8501 (DEMO_MODE=1, synthetic data)
 ```
 
-Stack completo (dashboard + agent):
+Full stack (dashboard + agent):
 
 ```bash
 export OPENAI_API_KEY=sk-...
@@ -24,29 +24,29 @@ docker compose --profile full up
 
 Stop:
 ```bash
-docker compose down                  # so o dashboard
-docker compose --profile full down   # tudo
+docker compose down                  # dashboard only
+docker compose --profile full down   # everything
 ```
 
-O Kraken CLI **nao** esta no container — para live paper trading, instale-o no host.
+The Kraken CLI is **not** bundled in the container — for live paper trading, install it on the host.
 
 ---
 
-## Pre-requisitos (instalacao manual sem Docker)
+## Prerequisites (manual install without Docker)
 
 - Python 3.10+
 - Kraken CLI
-- Chave de API da OpenAI
-- (Opcional) Wallet Ethereum para ERC-8004
+- OpenAI API key
+- (Optional) Ethereum wallet for ERC-8004
 
 ---
 
-## 1. Instalacao
+## 1. Install
 
 ```bash
 cd nogran.trader.agent
 
-# Ambiente virtual
+# Virtual environment
 python -m venv venv
 
 # Windows
@@ -55,7 +55,7 @@ python -m venv venv
 # Linux/Mac
 source venv/bin/activate
 
-# Dependencias
+# Dependencies
 pip install -r requirements.txt
 ```
 
@@ -63,26 +63,26 @@ pip install -r requirements.txt
 
 ## 2. Kraken CLI
 
-O hackathon exige o Kraken CLI como execution layer.
+The hackathon requires the Kraken CLI as the execution layer.
 
-### Instalacao
+### Install
 
 ```bash
 # Linux/Mac
 curl --proto '=https' --tlsv1.2 -LsSf \
   https://github.com/krakenfx/kraken-cli/releases/latest/download/kraken-cli-installer.sh | sh
 
-# Windows — baixar binario de:
+# Windows — download the binary from:
 # https://github.com/krakenfx/kraken-cli/releases
 ```
 
-### Verificar instalacao
+### Verify install
 
 ```bash
 kraken --version
 ```
 
-### Testar paper trading (sem API key)
+### Test paper trading (no API key needed)
 
 ```bash
 kraken paper buy BTC/USD 0.001 -o json
@@ -91,7 +91,7 @@ kraken paper pnl -o json
 kraken paper reset -o json
 ```
 
-### Market data (sem API key)
+### Market data (no API key needed)
 
 ```bash
 kraken market ticker BTC/USD -o json
@@ -100,15 +100,15 @@ kraken market ohlc BTC/USD --interval 1 -o json
 
 ---
 
-## 3. Variaveis de Ambiente
+## 3. Environment variables
 
-Copie `.env.example` para `.env` e configure:
+Copy `.env.example` to `.env` and configure:
 
 ```env
-# OpenAI — provider do strategy LLM (single-call structured output)
+# OpenAI — strategy LLM provider (single-call structured output)
 OPENAI_API_KEY=sk-...
 
-# Kraken (opcional — paper trading nao precisa de API key)
+# Kraken (optional — paper trading does not need an API key)
 KRAKEN_API_KEY=
 KRAKEN_SECRET_KEY=
 
@@ -120,42 +120,42 @@ SEPOLIA_RPC=https://rpc.sepolia.org
 
 ---
 
-## 4. PA KB chunks (opcional, melhora qualidade do RAG)
+## 4. PA KB chunks (optional, improves RAG quality)
 
-A Nogran PA KB tem dois componentes:
+The Nogran PA KB has two components:
 
-- `data/probabilities/pa_probabilities.json` — 62 setups + 22 hard rules (no repo, ja incluido)
-- `data/chunks/layer*.json` — passagens de referencia injetadas no prompt do LLM (gitignored — vem do repo dataset privado, copiar manualmente para ativar o RAG completo)
+- `data/probabilities/pa_probabilities.json` — 62 setups + 22 hard rules (already in this repo)
+- `data/chunks/layer*.json` — reference passages injected into the LLM prompt (gitignored — copy from the private dataset repo to enable the full RAG)
 
-Sem os chunks, o `PARetriever` retorna empty gracefully e o LLM cai pro conhecimento de training data. O agente continua funcional, so com menos contexto.
+Without the chunks, `PARetriever` returns empty gracefully and the LLM falls back to its training-data knowledge. The agent stays functional, just with less context.
 
 ---
 
 ## 5. ERC-8004 (Sepolia Testnet)
 
-### 5.1 Gerar wallet
+### 5.1 Generate a wallet
 
 ```bash
 python -c "from eth_account import Account; a = Account.create(); print(f'Address: {a.address}\nKey: {a.key.hex()}')"
 ```
 
-### 5.2 Obter ETH de teste
+### 5.2 Get test ETH
 
-Use um faucet de Sepolia:
+Use a Sepolia faucet:
 - https://sepoliafaucet.com/
 - https://www.alchemy.com/faucets/ethereum-sepolia
 
-### 5.3 Configurar
+### 5.3 Configure
 
-Adicione ao `.env`:
+Add to `.env`:
 ```env
-ERC8004_PRIVATE_KEY=0x_sua_chave_privada
-ERC8004_AGENT_URI=https://raw.githubusercontent.com/SEU_USER/nogran.trader.agent/main/agent_registration.json
+ERC8004_PRIVATE_KEY=0x_your_private_key
+ERC8004_AGENT_URI=https://raw.githubusercontent.com/YOUR_USER/nogran.trader.agent/main/agent_registration.json
 ```
 
-### 5.4 Registrar agente
+### 5.4 Register the agent
 
-O registro acontece automaticamente na primeira execucao do `main.py`. Para registrar manualmente:
+Registration happens automatically on the first `main.py` run. To register manually:
 
 ```bash
 cd src && python -c "
@@ -169,63 +169,65 @@ print(f'Agent registered: id={agent_id}')
 
 ---
 
-## 6. Executando o Agente
+## 6. Running the agent
 
 ```bash
 cd src && python main.py
 ```
 
-O agente ira:
-1. Conectar ao WebSocket da Kraken (15m)
-2. Calcular features (EMA, ATR, ADX, swings, etc.)
-3. Filtrar mercado choppy (Market Quality Score)
-4. Chamar o Strategy Engine (python_llm ou mock heuristic)
-5. Aplicar AI Overlay (regime + confidence)
-6. Calcular Risk Score (drawdown, R/R, Sharpe)
-7. Calcular Decision Score (4 sub-scores)
-8. Assinar TradeIntent (ERC-8004)
-9. Executar via Kraken CLI (paper trading)
-10. Logar tudo em `logs/decisions/` (JSONL)
+The agent will:
+1. Connect to the Kraken WebSocket (15m)
+2. Compute features (EMA, ATR, ADX, swings, etc.)
+3. Filter choppy markets (Market Quality Score)
+4. Call the Strategy Engine (`python_llm` or `mock` heuristic)
+5. Apply the AI Overlay (regime + confidence)
+6. Compute the Risk Score (drawdown, R/R, Sharpe)
+7. Compute the Decision Score (4 sub-scores)
+8. Sign the TradeIntent (ERC-8004)
+9. Execute via the Kraken CLI (paper trading)
+10. Log everything in `logs/decisions/` (JSONL)
 
 ---
 
-## 7. Notas Tecnicas
+## 7. Technical notes
 
 **Windows — DNS resolver:**
-O projeto detecta Windows e usa `ThreadedResolver` em vez de `aiodns`.
+The project detects Windows and uses `ThreadedResolver` instead of `aiodns`.
 
-**Validacao defensiva:**
-O `signal_parser.py` valida o JSON do LLM via `LLMSignalSchema` (Pydantic strict bounds + coerencia direcional). Sinais incoerentes sao coerced para AGUARDAR.
+**Defensive validation:**
+`signal_parser.py` validates the LLM JSON via `LLMSignalSchema` (Pydantic strict bounds + directional coherence). Incoherent signals are coerced to AGUARDAR.
 
 **Decision Score:**
-So executa trades com score > 65/100. Hard veto se qualquer sub-score < 20.
+Only executes trades with a score > 65/100. Hard veto if any sub-score < 20.
 
 **Execution:**
-Todas as ordens passam pelo Kraken CLI paper mode. Ordens sem stop loss sao proibidas pelo codigo.
+All orders go through the Kraken CLI paper mode. Orders without a stop loss are forbidden by the code.
 
 ---
 
-## 8. Estrutura do Repositorio
+## 8. Repository structure
 
 ```
 nogran.trader.agent/
 ├── src/
-│   ├── main.py                        # Pipeline completo
-│   ├── domain/                        # Modelos e enums
+│   ├── main.py                        # Full pipeline
+│   ├── domain/                        # Models and enums
 │   ├── market/                        # WebSocket, Features, Pre-Filter
 │   ├── strategy/                      # LLM Strategy + PA Retriever + Signal Parser + KB
 │   ├── ai/                            # Regime Detector, Decision Scorer
 │   ├── risk/                          # Position Sizer, Drawdown, Exposure
-│   ├── execution/                     # Kraken CLI Wrapper, Executor
+│   ├── execution/                     # Kraken CLI wrapper, Executor
 │   ├── compliance/                    # ERC-8004, Decision Logger
-│   ├── telemetry/                     # Trade Journal (futuro)
+│   ├── telemetry/                     # Trade Journal (planned)
 │   └── infra/                         # Config, Indicators
 ├── data/probabilities/                # PA KB JSON (62 setups + 22 rules)
-├── data/chunks/                       # Chunks RAG (gitignored, vem do dataset privado)
+├── data/chunks/                       # RAG chunks (gitignored, sourced from the private dataset repo)
 ├── logs/decisions/                    # Audit trail JSONL
 ├── agent_registration.json            # ERC-8004 agent metadata
 ├── requirements.txt
 ├── .env.example
+├── LICENSE                            # MIT
+├── THIRD_PARTY.md                     # Third-party disclosure
 ├── README.md
 ├── SETUP.md
 └── ARCHITECTURE.md
