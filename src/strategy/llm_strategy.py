@@ -42,7 +42,7 @@ logger = logging.getLogger(__name__)
 # History: v1.1-en (English prompts), v1.2-fee (fee-aware trader's equation),
 # v1.3-strict (hard RR constraints), v1.4-stop05 (stop >= 0.5% hard rule),
 # v3.0-structural (swing-anchored stops + structure-first pipeline).
-SCHEMA_SIGNATURE = "v3.1-loosen-target"
+SCHEMA_SIGNATURE = "v3.2-revert-target"
 
 # Hard guards: minimum stop/target distance and RR ratio. Mirror the prompt
 # rules but enforced in code so the LLM cannot bypass them.
@@ -54,10 +54,9 @@ SCHEMA_SIGNATURE = "v3.1-loosen-target"
 #       and stop >= 0.5%, the math floor stays positive after fees: target 1.0%
 #       = 1R fee (~0.4%) leaves +0.6% expected per win.
 MIN_STOP_DISTANCE_PCT = 0.005   # 0.5%
-MIN_TARGET_DISTANCE_PCT = 0.005  # 0.5% (was 1.0% — lowered after d60-70 diagnosis
-                                 # showing 189/193 LLM calls returning AGUARDAR because
-                                 # the prompt instructs "target >= 1% of entry" which is
-                                 # 9x ATR on BTC 15m — unreachable in most setups)
+MIN_TARGET_DISTANCE_PCT = 0.010  # 1.0% — reverted from 0.5% after paid backtest
+                                 # showed WORSE results with loosened target (avg_loss
+                                 # jumped $59→$75). The hard guard was protecting.
 MIN_RR_RATIO = 1.0               # target_distance / stop_distance — 1:1 allowed
 
 # Swing-based stop validation (Bloco 7 of P0 sprint).

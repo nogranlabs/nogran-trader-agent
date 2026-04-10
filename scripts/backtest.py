@@ -69,6 +69,7 @@ from telemetry.backtest_metrics import (  # noqa: E402
 #   - mock_regime        : regime detector local
 #   - _mock_ao_score     : AI overlay scorer local
 #   - generate_pa_phases : synthetic OHLCV para modo --source synthetic
+from strategy.local_signal import detect_local_regime, generate_local_signal  # noqa: E402  # v2 PA detectors
 from simulate_market import (  # noqa: E402
     _mock_ao_score,
     generate_pa_phases,
@@ -877,8 +878,8 @@ def run_backtest(
             # the rule states: trade 3-5% of bars. Most candles are AGUARDAR.
             # Calling LLM for all candles wastes ~95% of cost on obvious AGUARDAR.
             # Mock heuristic catches "obvious AGUARDAR" cases (range, no setup) for free.
-            mock_signal = mock_llm_response(features, regime, hallucinate=False,
-                                            strict_trend_alignment=True)
+            mock_signal = generate_local_signal(features, regime,
+                                               strict_trend_alignment=True)
             if mock_signal.action == Action.AGUARDAR:
                 # Mock says no candidate → skip LLM, save cost
                 stats["pre_filter_skip"] = stats.get("pre_filter_skip", 0) + 1
@@ -900,8 +901,8 @@ def run_backtest(
                 stats["no_go"] += 1
                 continue
         else:
-            signal = mock_llm_response(features, regime, hallucinate=False,
-                                       strict_trend_alignment=True)
+            signal = generate_local_signal(features, regime,
+                                         strict_trend_alignment=True)
 
         if signal.action == Action.AGUARDAR:
             stats["no_go"] += 1
@@ -941,23 +942,26 @@ def run_backtest(
                 })
                 continue
 
-        # Override stop/target with ATR-tuned values ONLY for the mock heuristic.
-        # The mock generates fixed RR=2.0 hardcoded; we override so --rr CLI flag
-        # actually changes effective RR. But for LLM signals, we TRUST the LLM's
-        # stop/target — the rule states stops/targets should reflect STRUCTURE
-        # (support/resistance, swings), not blind ATR multiples. The LLM has
-        # the PA chunks loaded and reasons about structure; overriding it
-        # with mechanical ATR distances destroys the value of the LLM.
+        # Stop/target strategy:
+        # - V2 detectors (local_signal.py) set structural stops (at swing
+        #   low/high) and measured-move targets. Trust them.
+        # - Only fall back to ATR override if the signal has placeholder
+        #   stop/target (both == entry = detector returned AGUARDAR-like
+        #   prices). This shouldn't happen but is defensive.
         if tuning.strategy_source == "mock":
-            stop_dist_pre = features.atr_14 * tuning.atr_stop_mult
-            target_dist_pre = stop_dist_pre * tuning.rr_min
-            if signal.action == Action.COMPRA:
-                signal.stop_loss = candle.close - stop_dist_pre
-                signal.take_profit = candle.close + target_dist_pre
-            elif signal.action == Action.VENDA:
-                signal.stop_loss = candle.close + stop_dist_pre
-                signal.take_profit = candle.close - target_dist_pre
-        # else: trust LLM stop/target as returned
+            stop_ok = abs(signal.stop_loss - signal.entry_price) > 1e-6
+            target_ok = abs(signal.take_profit - signal.entry_price) > 1e-6
+            if not stop_ok or not target_ok:
+                # Detector returned degenerate stop/target — fall back to ATR
+                stop_dist_pre = features.atr_14 * tuning.atr_stop_mult
+                target_dist_pre = stop_dist_pre * tuning.rr_min
+                if signal.action == Action.COMPRA:
+                    signal.stop_loss = candle.close - stop_dist_pre
+                    signal.take_profit = candle.close + target_dist_pre
+                elif signal.action == Action.VENDA:
+                    signal.stop_loss = candle.close + stop_dist_pre
+                    signal.take_profit = candle.close - target_dist_pre
+        # else (python_llm): trust LLM stop/target as returned
 
         # ----- Stage 4: KB enrichment + hallucination detector -----
         # Test #1 (no_kb_blend): pass kb=None to skip blend entirely (LLM solo)

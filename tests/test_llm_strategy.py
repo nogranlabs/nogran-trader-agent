@@ -551,27 +551,27 @@ class TestTargetAndRRGuards:
         # 2026-04-09 — RR floor lowered from 1.5 → 1.0 to be Nogran PA-compliant.
         # Nogran PA accepts 1:1 RR for high-probability shaved-bar / second-entry
         # setups where probability >= 60% compensates the low ratio.
-        assert MIN_TARGET_DISTANCE_PCT == 0.005
+        assert MIN_TARGET_DISTANCE_PCT == 0.010
         assert MIN_RR_RATIO == 1.0
 
     def test_compra_target_too_tight_coerces_aguardar(self):
         # 67000 entry, stop 66600 (0.6% — passes stop guard),
-        # target 67200 → distance 200 = 0.298% < 0.5% guard
+        # target 67500 → distance 500 = 0.746% < 1.0% guard
         s = self._strategy()
         data = valid_llm_response("COMPRA")
         data["entry_price"] = 67000.0
         data["stop_loss"] = 66600.0
-        data["take_profit"] = 67200.0
+        data["take_profit"] = 67500.0
         signal = s._parse_response(data, make_features())
         assert signal.action == Action.AGUARDAR
 
     def test_venda_target_too_tight_coerces_aguardar(self):
-        # 67000 entry, stop 67400 (0.6%), target 66800 (0.298%) → fails 0.5% rule
+        # 67000 entry, stop 67400 (0.6%), target 66500 (0.746%) → fails 1% rule
         s = self._strategy()
         data = valid_llm_response("VENDA")
         data["entry_price"] = 67000.0
         data["stop_loss"] = 67400.0
-        data["take_profit"] = 66800.0
+        data["take_profit"] = 66500.0
         signal = s._parse_response(data, make_features())
         assert signal.action == Action.AGUARDAR
 
