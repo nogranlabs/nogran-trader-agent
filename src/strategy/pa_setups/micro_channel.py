@@ -60,16 +60,21 @@ def detect_micro_channel_long(features: FeatureSnapshot) -> Optional[DetectedSet
         return None
 
     # --- Gate 5: Touching or near EMA (pullback to mean) ---
-    if not features.is_touching_ema and features.bars_since_ema_test > 2:
-        return None  # not currently testing EMA
+    # Relaxed from 2 to 5 bars — micro channels have small pullbacks that
+    # may not touch EMA exactly but stay close for several bars.
+    if not features.is_touching_ema and features.bars_since_ema_test > 5:
+        return None
 
     # --- Gate 6: ADX showing trend ---
     if features.adx_14 < 20:
         return None
 
-    # --- Gate 7: HTF aligned ---
-    if features.tf_1h_direction is not None and features.tf_1h_direction != "up":
-        return None
+    # --- Gate 7: HTF aligned (removed strict direction check) ---
+    # Structure HH_HL + EMA slope up + ADX > 20 is already bullish.
+    # Requiring 1h direction == "up" killed all 54 candidates that passed
+    # gates 1-6. Instead, just block if 1h is strongly against us.
+    if features.tf_1h_direction == "down" and features.tf_1h_below_ema:
+        return None  # only block when 1h is clearly bearish
 
     # --- Gate 8: Current bar should be bullish (bounce from EMA) ---
     if not features.candle.is_bullish:
@@ -131,13 +136,14 @@ def detect_micro_channel_short(features: FeatureSnapshot) -> Optional[DetectedSe
     if features.ema_slope_direction != "down":
         return None
 
-    if not features.is_touching_ema and features.bars_since_ema_test > 2:
+    if not features.is_touching_ema and features.bars_since_ema_test > 5:
         return None
 
     if features.adx_14 < 20:
         return None
 
-    if features.tf_1h_direction is not None and features.tf_1h_direction != "down":
+    # Only block when 1h is clearly bullish (mirror of long side)
+    if features.tf_1h_direction == "up" and features.tf_1h_above_ema:
         return None
 
     if features.candle.is_bullish:

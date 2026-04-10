@@ -42,8 +42,9 @@ def detect_second_attempt_long(features: FeatureSnapshot) -> Optional[DetectedSe
         return None
 
     bars_since = features.bars_since_failed_breakout_up
-    if bars_since < 0 or bars_since > 5:
-        return None  # too old or not detected
+    if bars_since < 0 or bars_since > 10:
+        return None  # too old or not detected (relaxed from 5 to 10 — second
+                     # attempts can develop over 6-10 bars in crypto 15m)
 
     candle = features.candle
     if not candle.is_bullish:
@@ -104,8 +105,8 @@ def detect_second_attempt_short(features: FeatureSnapshot) -> Optional[DetectedS
         return None
 
     bars_since = features.bars_since_failed_breakout_down
-    if bars_since < 0 or bars_since > 5:
-        return None
+    if bars_since < 0 or bars_since > 10:
+        return None  # relaxed from 5 to 10
 
     candle = features.candle
     if candle.is_bullish:

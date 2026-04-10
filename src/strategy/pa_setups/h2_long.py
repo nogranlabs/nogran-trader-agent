@@ -31,14 +31,17 @@ from strategy.pa_setups import DetectedSetup
 def detect_h2_long(features: FeatureSnapshot) -> Optional[DetectedSetup]:
     """Detect an H2 long setup. Returns DetectedSetup or None."""
 
-    # --- Gate 1: HTF must be bullish ---
-    # Strict: require 1h direction == "up". Also block if regime is ranging
-    # (0W/7L in Window B bear where regime was range/transition).
+    # --- Gate 1: HTF must be CLEARLY bullish ---
+    # Require 1h direction == "up" AND at least 2 consecutive 1h bull bars.
+    # A single green 1h candle in a downtrend is NOT a trend — it's noise.
+    # Also block in range/transition regime.
     if features.tf_1h_direction is not None:
         if features.tf_1h_direction != "up":
-            return None  # 1h is not bullish — don't buy
+            return None
+        if features.tf_1h_consecutive_bull < 2:
+            return None  # just 1 green 1h bar — not a trend
     if features.regime in ("range", "transition"):
-        return None  # don't buy pullbacks in range/transition — H2 is a trend setup
+        return None
 
     # --- Gate 2: Local structure bullish ---
     structure_ok = (

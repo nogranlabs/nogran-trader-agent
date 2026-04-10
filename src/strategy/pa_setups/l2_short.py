@@ -31,13 +31,15 @@ from strategy.pa_setups import DetectedSetup
 def detect_l2_short(features: FeatureSnapshot) -> Optional[DetectedSetup]:
     """Detect an L2 short setup. Returns DetectedSetup or None."""
 
-    # --- Gate 1: HTF must be bearish ---
-    # Strict: require 1h direction == "down". Also block in range/transition.
+    # --- Gate 1: HTF must be CLEARLY bearish ---
+    # Require 1h direction == "down" AND at least 2 consecutive 1h bear bars.
     if features.tf_1h_direction is not None:
         if features.tf_1h_direction != "down":
             return None
+        if features.tf_1h_consecutive_bear < 2:
+            return None  # just 1 red 1h bar — not a trend
     if features.regime in ("range", "transition"):
-        return None  # don't sell pullbacks in range/transition — L2 is a trend setup
+        return None
 
     # --- Gate 2: Local structure bearish ---
     structure_ok = (
