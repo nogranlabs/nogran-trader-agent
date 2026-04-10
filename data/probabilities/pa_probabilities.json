@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "generated_at": "2026-04-08T03:14:37Z",
-  "description": "Nogran price action setup probabilities — used by the Decision Scorer (Strategy Score, weight 35%). Curated in-house, cross-checked against public open-source price action references.",
+  "description": "Nogran price action setup probabilities — recalibrated for BTC/USD 15m. Empirical values from 90-day walk-forward backtest (Apr 2026). Non-empirical setups clamped to 35% (conservative — book values are for ES futures with much lower fees).",
   "total_setups": 62,
   "total_hard_rules": 22,
   "setups": [
@@ -15,12 +15,12 @@
         "bull_trend",
         "pullback_to_ma"
       ],
-      "probability_pct": 60,
+      "probability_pct": 25,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "empirical_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Nogran PA lista explicitamente como setup de 60%+; reward deve ser ao menos igual ao risco."
     },
@@ -34,12 +34,12 @@
         "bear_trend",
         "pullback_to_ma"
       ],
-      "probability_pct": 60,
+      "probability_pct": 30,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "empirical_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Setup de continuacao de 60%+ segundo Nogran PA."
     },
@@ -53,12 +53,12 @@
         "bull_trend",
         "wedge_pullback"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Listado por Nogran PA no bucket 60%+."
     },
@@ -72,12 +72,12 @@
         "bear_trend",
         "wedge_pullback"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Setup de 60%+ segundo Nogran PA."
     },
@@ -91,12 +91,12 @@
         "bull_trend",
         "after_bull_flag_breakout"
       ],
-      "probability_pct": 60,
+      "probability_pct": 25,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "empirical_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Bucket 60%+."
     },
@@ -110,12 +110,12 @@
         "bear_trend",
         "after_bear_flag_breakout"
       ],
-      "probability_pct": 60,
+      "probability_pct": 25,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "empirical_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Bucket 60%+."
     },
@@ -130,12 +130,12 @@
         "strong_bull_spike",
         "not_after_buy_climax"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Nao usar apos buy climax."
     },
@@ -150,12 +150,12 @@
         "strong_bear_spike",
         "not_after_sell_climax"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Nao usar apos sell climax."
     },
@@ -170,12 +170,12 @@
         "top_of_range",
         "second_entry_preferred"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Segunda entrada aumenta a probabilidade."
     },
@@ -190,12 +190,12 @@
         "bottom_of_range",
         "second_entry_preferred"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Segunda entrada aumenta a probabilidade."
     },
@@ -210,12 +210,12 @@
         "test_of_extreme",
         "strong_signal_bar"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Listado no bucket 60%+; precisa de signal bar forte."
     },
@@ -229,12 +229,12 @@
         "after_swing",
         "final_flag"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Listado por Nogran PA no bucket 60%+."
     },
@@ -248,12 +248,12 @@
         "bear_stairs",
         "test_prior_push_low"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Reversao para teste do swing anterior."
     },
@@ -267,12 +267,12 @@
         "bull_stairs",
         "test_prior_push_high"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Espelho do bear stairs."
     },
@@ -285,12 +285,12 @@
       "context": [
         "high_probability_setup"
       ],
-      "probability_pct": 70,
+      "probability_pct": 35,
       "probability_range": [
         70,
         90
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.0,
       "notes_pt": "Mesmo em scalps Nogran PA recomenda reward >= risk."
     },
@@ -304,12 +304,12 @@
         "strong_bull_breakout",
         "spike_phase"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Requer stop largo; spike acontece rapido."
     },
@@ -323,31 +323,31 @@
         "strong_bear_breakout",
         "spike_phase"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Espelho do bull spike breakout."
     },
     {
       "setup_id": "successful_breakout_spike_measured_move",
-      "name_en": "Successful breakout spike — measured move target",
-      "name_pt": "Breakout spike bem sucedido — alvo de measured move",
+      "name_en": "Successful breakout spike â€” measured move target",
+      "name_pt": "Breakout spike bem sucedido â€” alvo de measured move",
       "category": "breakout",
       "direction": "both",
       "context": [
         "strong_spike",
         "always_in_flip"
       ],
-      "probability_pct": 70,
+      "probability_pct": 35,
       "probability_range": [
         60,
         80
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.0,
       "notes_pt": "Nogran PA: probabilidade minima 60%, podendo chegar a 80%."
     },
@@ -360,50 +360,50 @@
       "context": [
         "strong_breakout"
       ],
-      "probability_pct": 70,
+      "probability_pct": 35,
       "probability_range": [
         70,
         80
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.0,
       "notes_pt": "Nogran PA afirma >70% para follow-through em breakouts fortes."
     },
     {
       "setup_id": "opening_reversal_swing",
-      "name_en": "Opening reversal — swing entry (strong setup)",
-      "name_pt": "Reversao de abertura — swing (setup forte)",
+      "name_en": "Opening reversal â€” swing entry (strong setup)",
+      "name_pt": "Reversao de abertura â€” swing (setup forte)",
       "category": "reversal",
       "direction": "both",
       "context": [
         "opening_range",
         "strong_signal"
       ],
-      "probability_pct": 55,
+      "probability_pct": 35,
       "probability_range": [
         50,
         60
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 2.0,
       "notes_pt": "Reward minimo 2x risco."
     },
     {
       "setup_id": "opening_reversal_scalp",
-      "name_en": "Opening reversal — scalp entry",
-      "name_pt": "Reversao de abertura — scalp",
+      "name_en": "Opening reversal â€” scalp entry",
+      "name_pt": "Reversao de abertura â€” scalp",
       "category": "scalp",
       "direction": "both",
       "context": [
         "opening_range",
         "strong_signal"
       ],
-      "probability_pct": 65,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Forma scalp da mesma reversao de abertura."
     },
@@ -442,7 +442,7 @@
       ],
       "probability_confidence": "explicit",
       "min_reward_risk": null,
-      "notes_pt": "80% dos breakouts de TR falham — fade o breakout inicial."
+      "notes_pt": "80% dos breakouts de TR falham â€” fade o breakout inicial."
     },
     {
       "setup_id": "trend_reversal_attempts_in_trend",
@@ -472,12 +472,12 @@
         "trading_range",
         "scaling_in"
       ],
-      "probability_pct": 50,
+      "probability_pct": 35,
       "probability_range": [
         40,
         60
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Reward minimo 1.5x risco."
     },
@@ -490,12 +490,12 @@
       "context": [
         "tight_trading_range"
       ],
-      "probability_pct": 50,
+      "probability_pct": 35,
       "probability_range": [
         40,
         60
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Bucket 50%."
     },
@@ -509,12 +509,12 @@
         "trading_range",
         "possible_reversal"
       ],
-      "probability_pct": 50,
+      "probability_pct": 35,
       "probability_range": [
         40,
         60
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 2.0,
       "notes_pt": "Reward 2x risco para compensar prob 50%."
     },
@@ -548,12 +548,12 @@
         "trend",
         "breakout_test"
       ],
-      "probability_pct": 50,
+      "probability_pct": 35,
       "probability_range": [
         40,
         60
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 2.0,
       "notes_pt": "Nogran PA define faixa explicita 40-60%."
     },
@@ -567,12 +567,12 @@
         "measured_move_target",
         "magnet"
       ],
-      "probability_pct": 50,
+      "probability_pct": 35,
       "probability_range": [
         40,
         60
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 2.0,
       "notes_pt": "Bucket 40-60%."
     },
@@ -587,12 +587,12 @@
         "overdone_bull",
         "resistance"
       ],
-      "probability_pct": 50,
+      "probability_pct": 35,
       "probability_range": [
         40,
         60
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 2.0,
       "notes_pt": "Bucket 40-60%."
     },
@@ -607,12 +607,12 @@
         "overdone_bear",
         "support"
       ],
-      "probability_pct": 50,
+      "probability_pct": 35,
       "probability_range": [
         40,
         60
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 2.0,
       "notes_pt": "Espelho do buy climax fade."
     },
@@ -627,12 +627,12 @@
         "range_bottom",
         "weak_signal_bar"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Nogran PA lista no bucket 60%+."
     },
@@ -647,12 +647,12 @@
         "range_top",
         "weak_signal_bar"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Espelho do limit low 1/2 buy."
     },
@@ -666,12 +666,12 @@
         "quiet_bull_flag",
         "at_ma"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "empirical_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Setup de 60%+."
     },
@@ -685,12 +685,12 @@
         "quiet_bear_flag",
         "at_ma"
       ],
-      "probability_pct": 60,
+      "probability_pct": 25,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "empirical_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Espelho do bull flag MA."
     },
@@ -704,12 +704,12 @@
         "bull_flag_breakout",
         "anticipating_pullback"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Setup de 60%+."
     },
@@ -723,12 +723,12 @@
         "bear_flag_breakout",
         "anticipating_pullback"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         60,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Espelho do bull flag BO pullback."
     },
@@ -741,12 +741,12 @@
       "context": [
         "trading_range"
       ],
-      "probability_pct": 50,
+      "probability_pct": 35,
       "probability_range": [
         50,
         60
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.0,
       "notes_pt": "Probabilidade media dentro de TR e ~50%, raramente 60%."
     },
@@ -760,12 +760,12 @@
         "weak_channel",
         "near_extreme"
       ],
-      "probability_pct": 40,
+      "probability_pct": 35,
       "probability_range": [
         30,
         50
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 2.0,
       "notes_pt": "Reward 2x+ porque a probabilidade e baixa."
     },
@@ -778,12 +778,12 @@
       "context": [
         "good_looking_setup"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         50,
         60
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Regra base de Nogran PA para evaluar trades."
     },
@@ -796,12 +796,12 @@
       "context": [
         "uncertain"
       ],
-      "probability_pct": 50,
+      "probability_pct": 35,
       "probability_range": [
         50,
         50
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 2.0,
       "notes_pt": "Quando incerto: assumir 50% e exigir reward 2x."
     },
@@ -835,12 +835,12 @@
         "tight_channel_no_pullbacks",
         "5_to_10_bar_micro_line"
       ],
-      "probability_pct": 70,
+      "probability_pct": 35,
       "probability_range": [
         65,
         75
       ],
-      "probability_confidence": "inferred",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Canal muito apertado de 2 a 10 barras sem pullbacks; primeira tentativa de reversao tipicamente falha e vira pullback de continuacao."
     },
@@ -855,12 +855,12 @@
         "small_pullbacks_10_to_30pct_adr",
         "strong_trend_day"
       ],
-      "probability_pct": 70,
+      "probability_pct": 35,
       "probability_range": [
         65,
         75
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Dia de tendencia com pullbacks muito pequenos. Nogran PA afirma explicitamente 70 por cento de sucesso para swing setups com trader experiente."
     },
@@ -875,12 +875,12 @@
         "consecutive_trend_bars",
         "no_overlap_of_bodies"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         55,
         65
       ],
-      "probability_confidence": "implied",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Em tendencia de alta forte, compradores fortes colocam ordens limite no fechamento da barra anterior; sinal de urgencia do touro."
     },
@@ -895,12 +895,12 @@
         "consecutive_bear_trend_bars",
         "weak_sell_signals"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         55,
         65
       ],
-      "probability_confidence": "implied",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Em bear trend forte, bulls presos e bears fortes vendem no fechamento; sinais fracos fazem a tendencia persistir."
     },
@@ -915,12 +915,12 @@
         "20_or_more_bars",
         "trend_channel_line_overshoot"
       ],
-      "probability_pct": 55,
+      "probability_pct": 35,
       "probability_range": [
         50,
         60
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 2.5,
       "notes_pt": "Tres empurroes em topo ou fundo de tendencia; melhor esperar segundo sinal. Nogran PA cita 60 por cento para correcao mais complexa."
     },
@@ -935,12 +935,12 @@
         "second_steeper_tcl",
         "climactic_behavior"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         55,
         65
       ],
-      "probability_confidence": "implied",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 2.5,
       "notes_pt": "Cunha com segunda linha de canal mais inclinada que a primeira; comportamento climatico, reversao tipica em duas pernas e 10 barras."
     },
@@ -955,12 +955,12 @@
         "pullback_to_breakout_price",
         "second_entry"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         55,
         65
       ],
-      "probability_confidence": "implied",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 2.5,
       "notes_pt": "Pullback que testa o preco de rompimento; Nogran PA cita como um dos setups a favor mais confiaveis."
     },
@@ -975,12 +975,12 @@
         "high_2_near_top_or_low_2_near_bottom",
         "expected_failure"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         55,
         65
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Em trading range, H2 perto do topo ou L2 perto do fundo tende a falhar; fade da falha tem 60 por cento explicito."
     },
@@ -995,12 +995,12 @@
         "near_measured_move_or_tcl",
         "strong_traders_step_aside"
       ],
-      "probability_pct": 55,
+      "probability_pct": 35,
       "probability_range": [
         50,
         60
       ],
-      "probability_confidence": "implied",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 2.0,
       "notes_pt": "Spike climatico em vacuo ate nivel chave onde traders fortes esperam para entrar contra. Reversao tipica apos o teste."
     },
@@ -1015,12 +1015,12 @@
         "overlap_between_swings",
         "two_way_trading"
       ],
-      "probability_pct": 55,
+      "probability_pct": 35,
       "probability_range": [
         50,
         60
       ],
-      "probability_confidence": "inferred",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Padrao escada com tres ou mais trading ranges em tendencia; permite trades nas duas direcoes com swing parcial a favor."
     },
@@ -1035,12 +1035,12 @@
         "breakout_mode",
         "late_in_trend_or_final_flag"
       ],
-      "probability_pct": 55,
+      "probability_pct": 35,
       "probability_range": [
         50,
         60
       ],
-      "probability_confidence": "inferred",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Triangulo em extremo de TR sinaliza modo de rompimento; levemente viesado para a tendencia anterior mas exige confirmacao."
     },
@@ -1055,12 +1055,12 @@
         "missed_original_entry",
         "always_in_clear"
       ],
-      "probability_pct": 55,
+      "probability_pct": 35,
       "probability_range": [
         50,
         60
       ],
-      "probability_confidence": "implied",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 1.5,
       "notes_pt": "Entrar tarde so se always-in claro e com posicao reduzida equivalente ao swing residual. Usar stop original, nao o de scalp."
     },
@@ -1075,12 +1075,12 @@
         "always_in_flip",
         "measured_move_target"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         55,
         70
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 2.0,
       "notes_pt": "Rompimento com spike forte tem 60 a 80 por cento explicito de atingir movimento medido. Entrar no fechamento do spike, stop abaixo da base."
     },
@@ -1095,12 +1095,12 @@
         "test_of_bear_low",
         "higher_low_second_leg_start"
       ],
-      "probability_pct": 50,
+      "probability_pct": 35,
       "probability_range": [
         40,
         60
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 3.0,
       "notes_pt": "HL apos quebra da trendline de baixa; ja inicia a segunda perna, mas probabilidade baixa com recompensa grande."
     },
@@ -1115,12 +1115,12 @@
         "test_of_bull_high",
         "lower_high_second_leg_start"
       ],
-      "probability_pct": 50,
+      "probability_pct": 35,
       "probability_range": [
         40,
         60
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 3.0,
       "notes_pt": "LH apos quebra da trendline de alta; tipicamente segunda chance para shorts apos HH inicial falhado."
     },
@@ -1135,12 +1135,12 @@
         "double_bottom_pattern",
         "confirmed_bull_reversal"
       ],
-      "probability_pct": 55,
+      "probability_pct": 35,
       "probability_range": [
         50,
         65
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 3.0,
       "notes_pt": "Padrao de fundo duplo com HL e um dos sinais mais fortes de MTR; traders que esperam confirmacao buscam 60 por cento de sucesso."
     },
@@ -1155,12 +1155,12 @@
         "double_top_pattern",
         "confirmed_bear_reversal"
       ],
-      "probability_pct": 55,
+      "probability_pct": 35,
       "probability_range": [
         50,
         65
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 3.0,
       "notes_pt": "Topo duplo com LH e confirmacao adicional; Nogran PA cita explicitamente 60 por cento para melhores setups de MTR."
     },
@@ -1175,12 +1175,12 @@
         "higher_high_test",
         "first_leg_start"
       ],
-      "probability_pct": 50,
+      "probability_pct": 35,
       "probability_range": [
         40,
         55
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 3.0,
       "notes_pt": "HH overshoot apos quebra da trendline; inicia primeira perna de reversao, geralmente com LH como segunda oportunidade."
     },
@@ -1195,12 +1195,12 @@
         "lower_low_test",
         "trend_channel_line_overshoot"
       ],
-      "probability_pct": 60,
+      "probability_pct": 35,
       "probability_range": [
         50,
         65
       ],
-      "probability_confidence": "explicit",
+      "probability_confidence": "clamped_btc_15m",
       "min_reward_risk": 2.0,
       "notes_pt": "LL overshoot apos quebra da trendline de baixa; Nogran PA observa que bears falham 80 por cento ao tentar estender o trend, favorecendo long."
     }
@@ -1208,11 +1208,11 @@
   "hard_rules": [
     {
       "rule_id": "always_use_stop",
-      "rule_pt": "Sempre tenha um stop de protecao no mercado — crenca e esperanca nao protegem contra premissa falha."
+      "rule_pt": "Sempre tenha um stop de protecao no mercado â€” crenca e esperanca nao protegem contra premissa falha."
     },
     {
       "rule_id": "no_high_prob_big_reward",
-      "rule_pt": "Nao existe trade com alta probabilidade E grande reward relativo ao risco — instituicoes nao deixam."
+      "rule_pt": "Nao existe trade com alta probabilidade E grande reward relativo ao risco â€” instituicoes nao deixam."
     },
     {
       "rule_id": "reward_at_least_risk_beginners",
@@ -1232,7 +1232,7 @@
     },
     {
       "rule_id": "80pct_reversals_fail",
-      "rule_pt": "80% das tentativas de reversao falham — encare cada topo como inicio de bull flag e cada fundo como bear flag."
+      "rule_pt": "80% das tentativas de reversao falham â€” encare cada topo como inicio de bull flag e cada fundo como bear flag."
     },
     {
       "rule_id": "80pct_breakouts_fail_in_range",
@@ -1252,7 +1252,7 @@
     },
     {
       "rule_id": "never_cherry_pick_swing_take_all_low_prob",
-      "rule_pt": "Em sistema de baixa probabilidade nao escolha trades — tem que pegar todos os setups validos."
+      "rule_pt": "Em sistema de baixa probabilidade nao escolha trades â€” tem que pegar todos os setups validos."
     },
     {
       "rule_id": "buy_above_bull_short_below_bear",
@@ -1295,5 +1295,5 @@
       "rule_pt": "Probabilidade 70%+ exige reward >= metade do risco para nao perder no longo prazo."
     }
   ],
-  "source": "nogran_pa_v1"
+  "source": "nogran_pa_v2_recalibrated"
 }
