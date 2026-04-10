@@ -29,12 +29,29 @@ from strategy.pa_setups.climactic_fade import (
     detect_climactic_long_fade,
     detect_climactic_short_fade,
 )
+from strategy.pa_setups.second_attempt import (
+    detect_second_attempt_long,
+    detect_second_attempt_short,
+)
+from strategy.pa_setups.micro_channel import (
+    detect_micro_channel_long,
+    detect_micro_channel_short,
+)
 
 
-# All detectors, in evaluation order. Each returns DetectedSetup | None.
+# All detectors, ordered by priority (highest-value first).
+# Each returns DetectedSetup | None. All are run per candle; best picked.
 DETECTORS = [
+    # Priority 80: Second attempt (the #1 PA setup, ~60% WR)
+    detect_second_attempt_long,
+    detect_second_attempt_short,
+    # Priority 75: Micro channel (tight trend, 70% KB prob)
+    detect_micro_channel_long,
+    detect_micro_channel_short,
+    # Priority 70: H2/L2 pullback (classic second entry)
     detect_h2_long,
     detect_l2_short,
+    # Priority 60: Climactic fade (counter-trend, lower confidence)
     detect_climactic_long_fade,
     detect_climactic_short_fade,
 ]

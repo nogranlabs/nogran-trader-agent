@@ -32,10 +32,12 @@ def detect_l2_short(features: FeatureSnapshot) -> Optional[DetectedSetup]:
     """Detect an L2 short setup. Returns DetectedSetup or None."""
 
     # --- Gate 1: HTF must be bearish ---
-    # Strict: require 1h direction == "down" (mirror of H2 long fix).
+    # Strict: require 1h direction == "down". Also block in range/transition.
     if features.tf_1h_direction is not None:
         if features.tf_1h_direction != "down":
             return None
+    if features.regime in ("range", "transition"):
+        return None  # don't sell pullbacks in range/transition — L2 is a trend setup
 
     # --- Gate 2: Local structure bearish ---
     structure_ok = (
@@ -62,9 +64,11 @@ def detect_l2_short(features: FeatureSnapshot) -> Optional[DetectedSetup]:
     if bull_count < 2:
         return None  # no real pullback (need 2+ bull bars before the bear resumption)
 
-    # --- Gate 4: NOT at spike bottom ---
+    # --- Gate 4: NOT at spike bottom + must be near recent high ---
     if features.is_at_5bar_low and features.consecutive_bear >= 3:
         return None
+    if features.bars_since_5bar_high > 3:
+        return None  # too far from the pullback high
 
     # --- Gate 5: Price near EMA ---
     if features.atr_14 <= 0:
@@ -94,7 +98,7 @@ def detect_l2_short(features: FeatureSnapshot) -> Optional[DetectedSetup]:
     if risk / current.close < 0.005:
         return None
 
-    target = current.close - risk * 2.0
+    target = current.close - risk * 1.5
 
     # --- Confidence scoring ---
     conf = 60

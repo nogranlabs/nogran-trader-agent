@@ -32,11 +32,13 @@ def detect_h2_long(features: FeatureSnapshot) -> Optional[DetectedSetup]:
     """Detect an H2 long setup. Returns DetectedSetup or None."""
 
     # --- Gate 1: HTF must be bullish ---
-    # Strict: require 1h direction == "up". The old version also accepted
-    # "above ema" which let 11 H2 longs through in a bear window (d60-70).
+    # Strict: require 1h direction == "up". Also block if regime is ranging
+    # (0W/7L in Window B bear where regime was range/transition).
     if features.tf_1h_direction is not None:
         if features.tf_1h_direction != "up":
             return None  # 1h is not bullish — don't buy
+    if features.regime in ("range", "transition"):
+        return None  # don't buy pullbacks in range/transition — H2 is a trend setup
 
     # --- Gate 2: Local structure bullish ---
     structure_ok = (
@@ -64,9 +66,13 @@ def detect_h2_long(features: FeatureSnapshot) -> Optional[DetectedSetup]:
     if bear_count < 2:
         return None  # no real pullback (need 2+ bear bars before the bull resumption)
 
-    # --- Gate 4: NOT at spike top ---
+    # --- Gate 4: NOT at spike top + must be near recent low ---
     if features.is_at_5bar_high and features.consecutive_bull >= 3:
         return None  # this is a spike top, NOT a pullback resumption
+    # The pullback should have created a recent 5-bar low within 3 bars.
+    # If bars_since_5bar_low > 3, we're not in the dip anymore.
+    if features.bars_since_5bar_low > 3:
+        return None  # too far from the pullback low
 
     # --- Gate 5: Price near EMA (pullback came close to mean) ---
     if features.atr_14 <= 0:
@@ -98,7 +104,7 @@ def detect_h2_long(features: FeatureSnapshot) -> Optional[DetectedSetup]:
     if risk / current.close < 0.005:
         return None  # stop too tight — noise territory
 
-    target = current.close + risk * 2.0  # R:R 2.0
+    target = current.close + risk * 1.5  # R:R 2.0
 
     # --- Confidence scoring ---
     conf = 60  # base
