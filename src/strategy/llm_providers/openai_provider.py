@@ -1,4 +1,4 @@
-"""OpenAI GPT-4o provider — single-call structured output via JSON Schema strict."""
+"""OpenAI provider — single-call structured output via JSON Schema strict."""
 
 from __future__ import annotations
 
@@ -12,7 +12,10 @@ from strategy.llm_providers.base import LLMProvider, ProviderError, RateLimitErr
 logger = logging.getLogger(__name__)
 
 
-DEFAULT_OPENAI_MODEL = "gpt-4o-2024-08-06"
+# Default model: gpt-4o-mini (~17x cheaper than gpt-4o for the same prompt:
+# $0.15/M input vs $2.50/M). Bumped 2026-04-09 to be the default for paid
+# backtests. Override per-run with `--model gpt-4o-2024-08-06`.
+DEFAULT_OPENAI_MODEL = "gpt-4o-mini-2024-07-18"
 
 
 class OpenAIProvider(LLMProvider):

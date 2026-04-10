@@ -18,8 +18,10 @@ remain in Portuguese because they are domain identifiers used elsewhere
 in the codebase. The reasoning fields will be in English.
 """
 
-# Default model: gpt-4o-2024-08-06 (supports JSON Schema strict)
-DEFAULT_MODEL = "gpt-4o-2024-08-06"
+# Default model: gpt-4o-mini-2024-07-18 (supports JSON Schema strict, ~17x
+# cheaper than gpt-4o for the same prompt: $0.15/M input vs $2.50/M).
+# Bumped 2026-04-09 after the cleanup as the default for paid backtests.
+DEFAULT_MODEL = "gpt-4o-mini-2024-07-18"
 DEFAULT_TEMPERATURE = 0.1
 
 
